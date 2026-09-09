@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="RILEN is the Reasoning & Intelligence Layer for Education Networks, helping schools, districts, and learning platforms turn data into explainable action."
+    />
+    <title>RILEN | Reasoning & Intelligence Layer for Education Networks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="RILEN home">
+        <span class="brand-mark">R</span>
+        <span>RILEN</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#platform">Platform</a>
+        <a href="#network">Network</a>
+        <a href="#governance">Governance</a>
+        <a href="#pilot">Pilot</a>
+      </nav>
+      <a class="header-cta" href="#pilot">Request pilot</a>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <canvas id="network-canvas" aria-hidden="true"></canvas>
+        <div class="hero-copy">
+          <p class="eyebrow">Reasoning & Intelligence Layer for Education Networks</p>
+          <h1>RILEN turns education data into decisions people can trust.</h1>
+          <p class="hero-text">
+            Connect schools, classrooms, student services, and learning apps through one explainable intelligence layer that finds risk, recommends action, and keeps human judgment in the loop.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#platform">Explore the layer</a>
+            <a class="secondary-btn" href="#pilot">Plan a pilot</a>
+          </div>
+        </div>
+
+        <aside class="command-center" aria-label="RILEN product preview">
+          <div class="window-bar">
+            <span></span><span></span><span></span>
+            <strong>Network Reasoning Console</strong>
+          </div>
+          <div class="signal-strip">
+            <article>
+              <span>Students represented</span>
+              <strong>42,680</strong>
+            </article>
+            <article>
+              <span>Explainable recommendations</span>
+              <strong>1,248</strong>
+            </article>
+            <article>
+              <span>Intervention confidence</span>
+              <strong>87%</strong>
+            </article>
+          </div>
+          <div class="insight-card featured">
+            <div>
+              <span class="tag">Priority pattern</span>
+              <h2>Grade 8 math recovery is losing momentum across 11 campuses.</h2>
+            </div>
+            <p>
+              RILEN links formative checks, attendance volatility, assignment gaps, and tutoring capacity, then explains why each school needs a different response.
+            </p>
+          </div>
+          <div class="reasoning-stack">
+            <div><span>1</span>Ingest SIS, LMS, assessment, attendance, and support data</div>
+            <div><span>2</span>Model learner, classroom, campus, and network context</div>
+            <div><span>3</span>Recommend next actions with evidence and confidence</div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="logo-band" aria-label="Education network data sources">
+        <span>SIS</span>
+        <span>LMS</span>
+        <span>Assessment</span>
+        <span>Attendance</span>
+        <span>Student Support</span>
+        <span>Curriculum</span>
+      </section>
+
+      <section class="section" id="platform">
+        <div class="section-heading">
+          <p class="eyebrow">Platform</p>
+          <h2>An intelligence layer above the tools schools already use.</h2>
+          <p>
+            RILEN does not replace classroom systems. It reasons across them, translating disconnected signals into timely guidance for educators, coordinators, and leadership teams.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <span class="feature-icon">01</span>
+            <h3>Unified learner graph</h3>
+            <p>Build a living map of students, courses, skills, supports, cohorts, and school context across the network.</p>
+          </article>
+          <article>
+            <span class="feature-icon">02</span>
+            <h3>Reasoning engine</h3>
+            <p>Detect academic, attendance, wellbeing, and operational patterns with evidence trails educators can inspect.</p>
+          </article>
+          <article>
+            <span class="feature-icon">03</span>
+            <h3>Action orchestration</h3>
+            <p>Turn recommendations into intervention plans, nudges, review queues, and measurable follow-through.</p>
+          </article>
+          <article>
+            <span class="feature-icon">04</span>
+            <h3>Network intelligence</h3>
+            <p>Compare what works across schools while preserving local context, role boundaries, and data permissions.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section split" id="network">
+        <div class="section-heading compact">
+          <p class="eyebrow">Education Network OS</p>
+          <h2>From fragmented dashboards to coordinated response.</h2>
+          <p>
+            RILEN gives each stakeholder a focused view of the same reasoning layer, so a district leader, principal, counselor, and teacher can act from shared evidence.
+          </p>
+        </div>
+        <div class="role-panel">
+          <div class="tabs" role="tablist" aria-label="RILEN role views">
+            <button class="active" type="button" role="tab" aria-selected="true" data-role="teacher">Teacher</button>
+            <button type="button" role="tab" aria-selected="false" data-role="leader">Leader</button>
+            <button type="button" role="tab" aria-selected="false" data-role="support">Support</button>
+          </div>
+          <div class="role-view" id="role-view">
+            <p class="tag">Teacher view</p>
+            <h3>Tomorrow's small group is ready.</h3>
+            <p>RILEN identifies six students who need fraction comparison practice, explains the evidence, and suggests a 22-minute activity using available curriculum.</p>
+            <ul>
+              <li>Evidence: exit tickets, missed prerequisite skill, last lesson pace</li>
+              <li>Action: regroup before independent practice</li>
+              <li>Measure: follow-up check auto-created for Friday</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section proof-grid">
+        <article>
+          <strong>12 min</strong>
+          <span>average time from new signal to recommended action</span>
+        </article>
+        <article>
+          <strong>4 layers</strong>
+          <span>student, classroom, campus, and network reasoning</span>
+        </article>
+        <article>
+          <strong>100%</strong>
+          <span>recommendations paired with evidence and confidence</span>
+        </article>
+      </section>
+
+      <section class="section" id="governance">
+        <div class="section-heading">
+          <p class="eyebrow">Trust Layer</p>
+          <h2>Built for responsible intelligence in education.</h2>
+        </div>
+        <div class="governance-layout">
+          <article class="policy-card">
+            <h3>Explainability by default</h3>
+            <p>Every recommendation shows the source signals, reasoning path, confidence level, and what changed since the last review.</p>
+          </article>
+          <article class="policy-card">
+            <h3>Human approval loops</h3>
+            <p>High-impact actions route through educator review, with override reasons captured for learning and accountability.</p>
+          </article>
+          <article class="policy-card">
+            <h3>Privacy-aware access</h3>
+            <p>Role-based views keep sensitive student data limited to the teams who need it for legitimate support.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section pilot" id="pilot">
+        <div>
+          <p class="eyebrow">Pilot RILEN</p>
+          <h2>Start with one network problem that matters.</h2>
+          <p>
+            Launch RILEN around attendance recovery, math acceleration, intervention coordination, or leadership intelligence, then expand as the reasoning layer earns trust.
+          </p>
+        </div>
+        <form class="pilot-form" aria-label="Pilot request form">
+          <label>
+            Work email
+            <input type="email" placeholder="you@schoolnetwork.edu" />
+          </label>
+          <label>
+            Pilot focus
+            <select>
+              <option>Academic intervention</option>
+              <option>Attendance recovery</option>
+              <option>Network analytics</option>
+              <option>Student support coordination</option>
+            </select>
+          </label>
+          <button class="primary-btn" type="button">Request pilot brief</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <span>RILEN</span>
+      <p>Reasoning & Intelligence Layer for Education Networks</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
