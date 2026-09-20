@@ -1,223 +1,660 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="RILEN is the Reasoning & Intelligence Layer for Education Networks, helping schools, districts, and learning platforms turn data into explainable action."
-    />
-    <title>RILEN | Reasoning & Intelligence Layer for Education Networks</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <a class="brand" href="#top" aria-label="RILEN home">
-        <span class="brand-mark">R</span>
-        <span>RILEN</span>
-      </a>
-      <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#platform">Platform</a>
-        <a href="#network">Network</a>
-        <a href="#governance">Governance</a>
-        <a href="#pilot">Pilot</a>
-      </nav>
-      <a class="header-cta" href="#pilot">Request pilot</a>
-    </header>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>RILEN: the intelligence layer for education</title>
+<meta name="description" content="RILEN unifies every silo of education data to power efficient administration, sharper teaching, personalised learning and involved parenting.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self' mailto:; frame-ancestors 'none'; upgrade-insecure-requests">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-    <main id="top">
-      <section class="hero">
-        <canvas id="network-canvas" aria-hidden="true"></canvas>
-        <div class="hero-copy">
-          <p class="eyebrow">Reasoning & Intelligence Layer for Education Networks</p>
-          <h1>RILEN turns education data into decisions people can trust.</h1>
-          <p class="hero-text">
-            Connect schools, classrooms, student services, and learning apps through one explainable intelligence layer that finds risk, recommends action, and keeps human judgment in the loop.
-          </p>
-          <div class="hero-actions">
-            <a class="primary-btn" href="#platform">Explore the layer</a>
-            <a class="secondary-btn" href="#pilot">Plan a pilot</a>
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="RILEN home"><span class="brand-dot"></span>RILEN</a>
+    <nav class="links" aria-label="Page sections">
+      <a href="#product">Product</a><a href="#people">Who it's for</a><a href="#thinking">How it thinks</a><a href="#trust">Trust</a><a href="#roadmap">Roadmap</a>
+    </nav>
+    <a class="btn-line" href="mailto:hello@rilen.app?subject=RILEN%20early%20access">Request early access</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-in">
+      <p class="h-eb"><i></i>The intelligence layer for education</p>
+      <h1 class="h1">
+        <span class="h1-s">Every silo of data, unified for</span>
+        <span class="rot" id="rot">
+          <span class="rot-i on">efficient administration.</span>
+          <span class="rot-i" aria-hidden="true">sharper teaching.</span>
+          <span class="rot-i" aria-hidden="true">personalised learning.</span>
+          <span class="rot-i" aria-hidden="true">involved parenting.</span>
+        </span>
+      </h1>
+      <div class="rsub" id="rsub" aria-live="polite">
+        <p class="rsub-i on">Fees, attendance, timetables, transport and staff in one live picture, so exceptions reach you before problems do.</p>
+        <p class="rsub-i">Every student's marks, interests and feedback beside your syllabus progress, so you know where each learner needs you.</p>
+        <p class="rsub-i">Practice and plans built from each student's own gaps and interests, at the pace they actually learn.</p>
+        <p class="rsub-i">Reports, teacher feedback, activities and school notices in one place, in words a parent can act on.</p>
+      </div>
+      <div class="rtabs" id="rtabs">
+        <button class="rtab on" type="button" aria-pressed="true">Administration</button>
+        <button class="rtab" type="button" aria-pressed="false">Teaching</button>
+        <button class="rtab" type="button" aria-pressed="false">Learning</button>
+        <button class="rtab" type="button" aria-pressed="false">Parenting</button>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-white" href="mailto:hello@rilen.app?subject=RILEN%20early%20access">Request early access</a>
+        <a class="text-link" href="#product">Try the product</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRODUCT ================= -->
+<section class="showcase" id="product">
+  <div class="wrap">
+    <div class="show-head">
+      <div>
+        <h2 class="h2">Pick a seat. See your day, prepared.</h2>
+        <p class="lede">The same connected data becomes a different, focused screen for each person. Everything in it is clickable.</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Choose a role" id="tabs">
+        <button class="tab" role="tab" id="tab-institution" aria-controls="scr-institution" aria-selected="true" data-role="institution"><i></i>Institution</button>
+        <button class="tab" role="tab" id="tab-teacher" aria-controls="scr-teacher" aria-selected="false" data-role="teacher"><i></i>Teacher</button>
+        <button class="tab" role="tab" id="tab-parent" aria-controls="scr-parent" aria-selected="false" data-role="parent"><i></i>Parent</button>
+        <button class="tab" role="tab" id="tab-student" aria-controls="scr-student" aria-selected="false" data-role="student"><i></i>Student</button>
+      </div>
+    </div>
+
+    <div class="win">
+      <div class="win-bar"><span class="brand-dot"></span><span class="win-role" id="winrole">RILEN for institutions</span><span class="win-note">Sample data</span></div>
+
+<!-- ============ INSTITUTION ============ -->
+<div class="screen" data-role="institution" id="scr-institution" role="tabpanel" aria-labelledby="tab-institution">
+  <aside class="side">
+    <div class="side-who"><span class="av">S</span><div><b>Sample Institution</b><br><span class="note">Principal's view</span></div></div>
+    <button class="nav-i" data-nav="i-today" aria-current="true"><span data-ic="home"></span>Today</button>
+    <button class="nav-i" data-nav="i-live" aria-current="false"><span data-ic="live"></span>Live campus</button>
+    <button class="nav-i" data-nav="i-handled" aria-current="false"><span data-ic="bolt"></span>Handled for you</button>
+    <button class="nav-i" data-nav="i-fees" aria-current="false"><span data-ic="wallet"></span>Fees</button>
+    <button class="nav-i" data-nav="i-compare" aria-current="false"><span data-ic="compare"></span>How we compare</button>
+    <p class="side-foot">612 students · 38 teachers · 5 bus routes</p>
+  </aside>
+  <div class="mainc">
+    <div class="topbar"><p class="tb-t">Good morning. <span data-needs-line></span></p><span class="live"><i></i><span id="livepill">Live · Assembly ongoing</span></span></div>
+    <div class="scroll">
+
+      <section class="sec" id="i-today">
+        <div class="ask">
+          <div class="ask-box"><span data-ic="spark"></span><span class="ask-q">Ask RILEN anything about your institution</span></div>
+          <div class="ask-chips">
+            <button class="chip" data-q="How are we doing versus other institutions?" data-a="You lead on fee collection and attendance. The biggest gap is parent response rate, 13 points below the median. Details are under How we compare." data-src="Based on: anonymous benchmarks across 42 similar institutions">How are we doing versus other institutions?</button>
+            <button class="chip" data-q="Why is Class 8 attendance down?" data-a="Absences cluster on Tuesday and Wednesday mornings, mostly on Bus route 4, which ran 40 minutes late both days. Transport has been notified." data-src="Based on: attendance, transport logs">Why is Class 8 attendance down?</button>
+            <button class="chip" data-q="Who should I call this week?" data-a="Six families. Each has an installment due within 5 days and no reply to two reminders. Ordered by amount and days overdue, with a call note drafted for each." data-src="Based on: dues, reminder log, replies">Who should I call this week?</button>
+          </div>
+          <p class="ask-ans" hidden></p>
+        </div>
+        <div class="needs" data-needs-strip></div>
+        <div class="grid">
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Collected today</span><span class="kpi-v" data-to="184500" data-pre="₹" data-fmt="in">₹1,84,500</span><span class="kpi-d"><span class="up">▲ 12%</span> vs last week</span></div><svg class="spark" data-spark="3,4,3,5,4,6,5,7"></svg></div></div>
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Student attendance</span><span class="kpi-v" data-to="94" data-suf="%">94%</span><span class="kpi-d">Staff 96%</span></div><svg class="spark" data-spark="93,94,94,92,93,94,94"></svg></div></div>
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Overdue fees</span><span class="kpi-v">₹9.6 L</span><span class="kpi-d"><span class="up">▼ 4%</span> · 87 families</span></div><svg class="spark" data-spark="12,11.5,11,10.5,10.2,9.9,9.6"></svg></div></div>
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Needs you</span><span class="kpi-v" data-needs>4</span><span class="kpi-d">Tap a chip above</span></div></div></div>
+        </div>
+        <div class="pnl" style="margin-top:.85rem">
+          <div class="pnl-h"><span class="pnl-t">Since yesterday</span><span class="pnl-s">What changed</span></div>
+          <div class="chg">
+            <div class="chg-i"><span class="mk mk-done"><span data-ic="check12"></span></span><p><b>₹4.2 L collected</b> since Friday. Overdue is down 4%.</p></div>
+            <div class="chg-i"><span class="mk mk-need"></span><p><b>Ms. Iyer is absent.</b> Cover found for 4 of 5 periods.</p></div>
+            <div class="chg-i"><span class="mk mk-info"></span><p><b>Class 8 attendance ▼ 9%.</b> Linked to Bus route 4 delays.</p></div>
+            <div class="chg-i"><span class="mk mk-info"></span><p><b>3 admission enquiries.</b> 2 visits already booked.</p></div>
           </div>
         </div>
+      </section>
 
-        <aside class="command-center" aria-label="RILEN product preview">
-          <div class="window-bar">
-            <span></span><span></span><span></span>
-            <strong>Network Reasoning Console</strong>
-          </div>
-          <div class="signal-strip">
-            <article>
-              <span>Students represented</span>
-              <strong>42,680</strong>
-            </article>
-            <article>
-              <span>Explainable recommendations</span>
-              <strong>1,248</strong>
-            </article>
-            <article>
-              <span>Intervention confidence</span>
-              <strong>87%</strong>
-            </article>
-          </div>
-          <div class="insight-card featured">
-            <div>
-              <span class="tag">Priority pattern</span>
-              <h2>Grade 8 math recovery is losing momentum across 11 campuses.</h2>
+      <section class="sec" id="i-live">
+        <div class="sec-h"><span class="eb">Live campus</span><h3 class="sec-t">What is happening right now</h3></div>
+        <div class="pnl">
+          <div class="pnl-h"><span class="pnl-t">Today's day, live</span><span class="pnl-s" id="clock">9:10 am</span></div>
+          <div class="tl" id="tl"></div>
+          <p class="banner" id="banner"></p>
+          <div class="tiles" id="tiles"></div>
+          <p class="detail" id="tdetail">Tap a class to see what is on.</p>
+          <div class="hlegend"><span style="--st:var(--good)"><i></i>In session</span><span style="--st:var(--iris)"><i></i>Assembly</span><span style="--st:var(--warn)"><i></i>Activity</span><span style="--st:var(--ink)"><i></i>Exam</span><span style="--st:var(--need)"><i></i>Substitute</span><span style="--st:var(--muted)"><i></i>Break</span></div>
+        </div>
+      </section>
+
+      <section class="sec" id="i-handled">
+        <div class="sec-h"><span class="eb">Handled for you</span><h3 class="sec-t">Disruptions RILEN already worked around</h3></div>
+        <div class="grid">
+          <div class="pnl c7" data-resolvable data-need data-label="Publish new timetable">
+            <div class="pnl-h"><span class="pnl-t">Ms. Iyer (Science) is absent today</span><span class="tag tag-need">Timetable reshuffled</span></div>
+            <p class="note" style="margin-bottom:.6rem">Leave request arrived at 7:42 am. RILEN found cover for 4 of her 5 periods.</p>
+            <div class="tt">
+              <div class="tt-r hd"><span>Slot</span><span>Class</span><span>Was</span><span>Now</span></div>
+              <div class="tt-r"><span>P2</span><span>5B Science</span><span class="tt-was">Ms. Iyer</span><span class="tt-now">Mr. Khan (free period)</span></div>
+              <div class="tt-r"><span>P3</span><span>7A Science</span><span class="tt-was">Ms. Iyer</span><span class="tt-now">Ms. Nair, self-study set</span></div>
+              <div class="tt-r"><span>P4</span><span>9A Chemistry</span><span class="tt-was">Ms. Iyer</span><span class="tt-now">Merged with 9B, Mr. Sen</span></div>
+              <div class="tt-r"><span>P6</span><span>5B Lab</span><span class="tt-was">Ms. Iyer</span><span class="tt-now">Moved to Thursday P5</span></div>
             </div>
-            <p>
-              RILEN links formative checks, attendance volatility, assignment gaps, and tutoring capacity, then explains why each school needs a different response.
-            </p>
+            <div class="q-act"><button class="b b-acc" data-go data-msg="Published. 4 teachers and 3 classes notified, lesson plans shared with cover teachers.">Publish new timetable</button><button class="b" data-why data-open="Hide reasoning" data-closed="See why" aria-expanded="false">See why</button></div>
+            <ul class="trace" hidden><li>Only one free teacher was qualified for Science in Period 2</li><li>No teacher goes above 6 periods today</li><li>Class 10A exam supervision is unchanged</li></ul>
+            <p class="q-msg"></p>
           </div>
-          <div class="reasoning-stack">
-            <div><span>1</span>Ingest SIS, LMS, assessment, attendance, and support data</div>
-            <div><span>2</span>Model learner, classroom, campus, and network context</div>
-            <div><span>3</span>Recommend next actions with evidence and confidence</div>
+          <div class="pnl c5" data-resolvable data-need data-label="Send rain notices">
+            <div class="pnl-h"><span class="pnl-t">Heavy rain forecast tomorrow, 7 to 9 am</span></div>
+            <p class="note" style="margin-bottom:.4rem">Expected bus delay by route</p>
+            <div id="routes"></div>
+            <p style="margin-top:.5rem"><b>Suggested:</b> notify 148 parents on routes 2 and 4, and hold assembly in classrooms.</p>
+            <div class="q-act"><button class="b b-acc" data-go data-msg="Sent to 148 parents in English and Hindi. Assembly moved indoors.">Send notices</button><button class="b" data-why data-open="Hide reasoning" data-closed="See why" aria-expanded="false">See why</button></div>
+            <ul class="trace" hidden><li>Forecast: 18 mm of rain between 7 and 9 am</li><li>Routes 2 and 4 cross the low bridge, 30 to 35 minutes late in the last rain</li><li>Notices go out at 8 pm, when parents usually read them</li></ul>
+            <p class="q-msg"></p>
           </div>
-        </aside>
-      </section>
-
-      <section class="logo-band" aria-label="Education network data sources">
-        <span>SIS</span>
-        <span>LMS</span>
-        <span>Assessment</span>
-        <span>Attendance</span>
-        <span>Student Support</span>
-        <span>Curriculum</span>
-      </section>
-
-      <section class="section" id="platform">
-        <div class="section-heading">
-          <p class="eyebrow">Platform</p>
-          <h2>An intelligence layer above the tools schools already use.</h2>
-          <p>
-            RILEN does not replace classroom systems. It reasons across them, translating disconnected signals into timely guidance for educators, coordinators, and leadership teams.
-          </p>
-        </div>
-        <div class="feature-grid">
-          <article>
-            <span class="feature-icon">01</span>
-            <h3>Unified learner graph</h3>
-            <p>Build a living map of students, courses, skills, supports, cohorts, and school context across the network.</p>
-          </article>
-          <article>
-            <span class="feature-icon">02</span>
-            <h3>Reasoning engine</h3>
-            <p>Detect academic, attendance, wellbeing, and operational patterns with evidence trails educators can inspect.</p>
-          </article>
-          <article>
-            <span class="feature-icon">03</span>
-            <h3>Action orchestration</h3>
-            <p>Turn recommendations into intervention plans, nudges, review queues, and measurable follow-through.</p>
-          </article>
-          <article>
-            <span class="feature-icon">04</span>
-            <h3>Network intelligence</h3>
-            <p>Compare what works across schools while preserving local context, role boundaries, and data permissions.</p>
-          </article>
         </div>
       </section>
 
-      <section class="section split" id="network">
-        <div class="section-heading compact">
-          <p class="eyebrow">Education Network OS</p>
-          <h2>From fragmented dashboards to coordinated response.</h2>
-          <p>
-            RILEN gives each stakeholder a focused view of the same reasoning layer, so a district leader, principal, counselor, and teacher can act from shared evidence.
-          </p>
-        </div>
-        <div class="role-panel">
-          <div class="tabs" role="tablist" aria-label="RILEN role views">
-            <button class="active" type="button" role="tab" aria-selected="true" data-role="teacher">Teacher</button>
-            <button type="button" role="tab" aria-selected="false" data-role="leader">Leader</button>
-            <button type="button" role="tab" aria-selected="false" data-role="support">Support</button>
+      <section class="sec" id="i-fees">
+        <div class="sec-h"><span class="eb">Fees</span><h3 class="sec-t">Collection, forecast and follow-ups</h3></div>
+        <div class="grid">
+          <div class="pnl c7">
+            <div class="pnl-h"><span class="pnl-t">Fee collection this month</span><span class="pnl-s">% of expected, with forecast</span></div>
+            <div class="chart" id="ch-collect"></div>
+            <div class="legend-row"><span><i class="sw-line"></i>Collected</span><span><i class="sw-line mut dashed"></i>If nothing changes</span><span><i class="sw-line acc dashed"></i>With RILEN's plan</span></div>
+            <p class="insight">Harvest season starts next week. Moving reminders earlier could lift the month from <b>82%</b> to <b>93%</b>.</p>
           </div>
-          <div class="role-view" id="role-view">
-            <p class="tag">Teacher view</p>
-            <h3>Tomorrow's small group is ready.</h3>
-            <p>RILEN identifies six students who need fraction comparison practice, explains the evidence, and suggests a 22-minute activity using available curriculum.</p>
-            <ul>
-              <li>Evidence: exit tickets, missed prerequisite skill, last lesson pace</li>
-              <li>Action: regroup before independent practice</li>
-              <li>Measure: follow-up check auto-created for Friday</li>
+          <div class="pnl c5">
+            <div class="pnl-h"><span class="pnl-t">Needs a decision</span></div>
+            <ul class="q-list">
+              <li class="q-item" data-resolvable data-need data-label="Match 3 payments"><span class="mk mk-need"></span><div>
+                <p class="q-t">3 payments can't be matched to a student</p><p class="q-d">One bank entry covers two siblings' dues.</p>
+                <div class="q-act"><button class="b b-acc" data-go data-msg="Matched. 2 receipts issued and the family notified.">Confirm match</button><button class="b" data-why data-open="Hide reasoning" data-closed="See why" aria-expanded="false">See why</button></div>
+                <ul class="trace" hidden><li>Bank reference has only a guardian's name</li><li>₹12,400 equals Kavya's ₹6,200 plus Dev's ₹6,200</li><li>Confidence 92%. Same guardian on record.</li></ul><p class="q-msg"></p></div></li>
+              <li class="q-item" data-resolvable data-need data-label="Send 34 reminders"><span class="mk mk-need"></span><div>
+                <p class="q-t">Send reminders to 34 families</p><p class="q-d">Gentle tone, 6:30 pm, English and Hindi.</p>
+                <div class="q-act"><button class="b b-acc" data-go data-msg="Scheduled for 6:30 pm. Tracking replies." data-wf='{"approve":["0","none waiting","done"],"send":["87","sent","done"]}'>Approve and schedule</button><button class="b" data-why data-open="Hide reasoning" data-closed="See why" aria-expanded="false">See why</button></div>
+                <ul class="trace" hidden><li>Dues open 6 to 14 days</li><li>Harvest season begins next week, so timing moved earlier</li><li>None of these families were reminded in the last 7 days</li></ul><p class="q-msg"></p></div></li>
             </ul>
           </div>
+          <div class="pnl c12">
+            <div class="pnl-h"><span class="pnl-t">Fee follow-up, running on its own</span><span class="pnl-s">Since Monday</span></div>
+            <div class="wf">
+              <div class="wf-s done" data-step="spot"><span class="wf-n">87</span><span class="wf-l">families spotted</span></div>
+              <div class="wf-s done" data-step="draft"><span class="wf-n">87</span><span class="wf-l">messages drafted</span></div>
+              <div class="wf-s now" data-step="approve"><span class="wf-n">34</span><span class="wf-l">waiting on you</span></div>
+              <div class="wf-s done" data-step="send"><span class="wf-n">53</span><span class="wf-l">sent</span></div>
+              <div class="wf-s done" data-step="track"><span class="wf-n">21</span><span class="wf-l">replied, 12 promised</span></div>
+            </div>
+            <p class="insight note"><b style="color:var(--ink)">12 families promised to pay by Friday.</b> 9 asked for a flexible plan. If there is no reply in 3 days, RILEN prepares a call note. Nothing goes out without the approval step you set.</p>
+          </div>
         </div>
       </section>
 
-      <section class="section proof-grid">
-        <article>
-          <strong>12 min</strong>
-          <span>average time from new signal to recommended action</span>
-        </article>
-        <article>
-          <strong>4 layers</strong>
-          <span>student, classroom, campus, and network reasoning</span>
-        </article>
-        <article>
-          <strong>100%</strong>
-          <span>recommendations paired with evidence and confidence</span>
-        </article>
-      </section>
-
-      <section class="section" id="governance">
-        <div class="section-heading">
-          <p class="eyebrow">Trust Layer</p>
-          <h2>Built for responsible intelligence in education.</h2>
-        </div>
-        <div class="governance-layout">
-          <article class="policy-card">
-            <h3>Explainability by default</h3>
-            <p>Every recommendation shows the source signals, reasoning path, confidence level, and what changed since the last review.</p>
-          </article>
-          <article class="policy-card">
-            <h3>Human approval loops</h3>
-            <p>High-impact actions route through educator review, with override reasons captured for learning and accountability.</p>
-          </article>
-          <article class="policy-card">
-            <h3>Privacy-aware access</h3>
-            <p>Role-based views keep sensitive student data limited to the teams who need it for legitimate support.</p>
-          </article>
+      <section class="sec" id="i-compare">
+        <div class="sec-h"><span class="eb">How we compare</span><h3 class="sec-t">Where you stand among similar institutions</h3><span class="tag tag-acc">Network preview</span></div>
+        <div class="grid">
+          <div class="pnl c7">
+            <div class="pnl-h"><span class="pnl-t">Your position</span><span class="pnl-s">Anonymous, 42 similar institutions</span></div>
+            <div class="db" id="db"></div>
+            <div class="db-ax"><span><i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--good);vertical-align:-1px"></i> You, ahead of median</span><span><i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--need);vertical-align:-1px"></i> You, behind median</span><span>Bar = median to top quarter</span></div>
+          </div>
+          <div class="pnl c5">
+            <div class="pnl-h"><span class="pnl-t">Where to improve</span></div>
+            <p><b>Parent response rate</b> is your biggest gap: 13 points below the median.</p>
+            <ul class="steps-l">
+              <li>Institutions that closed this gap send one weekly digest instead of many messages</li>
+              <li>They write in the family's home language as well</li>
+              <li>They ask for a one-tap reply, not a call back</li>
+            </ul>
+            <div class="q-act"><a class="b b-acc" href="mailto:hello@rilen.app?subject=Benchmark%20improvement%20playbook">Talk to the RILEN team</a></div>
+            <p class="note" style="margin-top:.6rem">We share the playbook and help set it up. Only aggregated figures are ever compared.</p>
+          </div>
         </div>
       </section>
 
-      <section class="section pilot" id="pilot">
-        <div>
-          <p class="eyebrow">Pilot RILEN</p>
-          <h2>Start with one network problem that matters.</h2>
-          <p>
-            Launch RILEN around attendance recovery, math acceleration, intervention coordination, or leadership intelligence, then expand as the reasoning layer earns trust.
-          </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TEACHER ============ -->
+<div class="screen" data-role="teacher" id="scr-teacher" role="tabpanel" aria-labelledby="tab-teacher" hidden>
+  <aside class="side">
+    <div class="side-who"><span class="av">R</span><div><b>Ms. Rao</b><br><span class="note">Class teacher 8B · Maths</span></div></div>
+    <button class="nav-i" data-nav="t-today" aria-current="true"><span data-ic="home"></span>Today</button>
+    <button class="nav-i" data-nav="t-students" aria-current="false"><span data-ic="users"></span>My students</button>
+    <button class="nav-i" data-nav="t-subject" aria-current="false"><span data-ic="book"></span>My subject</button>
+    <button class="nav-i" data-nav="t-test" aria-current="false"><span data-ic="edit"></span>Create a test</button>
+    <button class="nav-i" data-nav="t-msg" aria-current="false"><span data-ic="chat"></span>Messages</button>
+    <p class="side-foot">38 students · 41 school days left</p>
+  </aside>
+  <div class="mainc">
+    <div class="topbar"><p class="tb-t">Period 3 in 12 minutes. <span data-needs-line></span></p><span class="live"><i></i>Class 8B · Maths</span></div>
+    <div class="scroll">
+
+      <section class="sec" id="t-today">
+        <div class="ask">
+          <div class="ask-box"><span data-ic="spark"></span><span class="ask-q">Ask RILEN about your students or your subject</span></div>
+          <div class="ask-chips">
+            <button class="chip" data-q="How am I doing in Maths?" data-a="Your class average is 68%, up 4 points in 8 weeks and 4 above Section 8A. Students rate your explanations 4.4 out of 5 but pace 3.8. Fractions is where to slow down." data-src="Based on: marks, student feedback, syllabus pace">How am I doing in Maths?</button>
+            <button class="chip" data-q="Who needs help with fractions?" data-a="Five students: Meera, Rohan, Ishaan, Sara and Dev. All stall at finding a common denominator. Two of them also missed the last two homework sets." data-src="Based on: quiz answers, homework, classwork">Who needs help with fractions?</button>
+            <button class="chip" data-q="What do parents want from 8B?" data-a="The most common asks: more fractions practice at home (9 parents), earlier notice of tests (6) and more music and art time (5)." data-src="Based on: parent messages and preferences">What do parents want from 8B?</button>
+          </div>
+          <p class="ask-ans" hidden></p>
         </div>
-        <form class="pilot-form" aria-label="Pilot request form">
-          <label>
-            Work email
-            <input type="email" placeholder="you@schoolnetwork.edu" />
-          </label>
-          <label>
-            Pilot focus
-            <select>
-              <option>Academic intervention</option>
-              <option>Attendance recovery</option>
-              <option>Network analytics</option>
-              <option>Student support coordination</option>
-            </select>
-          </label>
-          <button class="primary-btn" type="button">Request pilot brief</button>
-        </form>
+        <div class="needs" data-needs-strip></div>
+        <div class="grid">
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Present today</span><span class="kpi-v">36 of 38</span><span class="kpi-d">Marked from roll call</span></div></div></div>
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Syllabus covered</span><span class="kpi-v" data-to="62" data-suf="%">62%</span><span class="kpi-d">38% left · on pace</span></div></div></div>
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Class average</span><span class="kpi-v" data-to="68" data-suf="%">68%</span><span class="kpi-d"><span class="up">▲ 4 pts</span> in 8 weeks</span></div><svg class="spark" data-spark="61,62,60,63,64,65,66,68"></svg></div></div>
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Parent messages</span><span class="kpi-v">3 new</span><span class="kpi-d">Replies drafted</span></div></div></div>
+        </div>
+        <div class="grid">
+          <div class="pnl c5">
+            <div class="pnl-h"><span class="pnl-t">Now teaching</span><span class="tag tag-acc">In progress</span></div>
+            <p class="h3" style="font-size:1.15rem">Chapter 8 · Ratios and proportion</p>
+            <p class="note" style="margin:.2rem 0 .7rem">Started 3 days ago. About half covered.</p>
+            <ul class="plain"><li><span>Lesson plan</span><b>Ready</b></li><li><span>Slides and 6 practice problems</span><b>Ready</b></li><li><span>Suggested recap</span><b>Fractions, 10 min</b></li></ul>
+          </div>
+          <div class="pnl c7">
+            <div class="pnl-h"><span class="pnl-t">Syllabus</span><span class="pnl-s">Maths, 12 chapters</span></div>
+            <div class="chs" id="chs"></div><div class="chn" id="chn"></div>
+            <div class="stat3"><div><b>62%</b><span class="note">covered</span></div><div><b>38%</b><span class="note">left: Ratios (half), Percentages, Mensuration, Data, Symmetry</span></div><div><b>+2 days</b><span class="note">ahead of plan</span></div></div>
+            <div class="chart" id="ch-syl"></div>
+          </div>
+        </div>
       </section>
-    </main>
 
-    <footer>
-      <span>RILEN</span>
-      <p>Reasoning & Intelligence Layer for Education Networks</p>
-    </footer>
+      <section class="sec" id="t-students">
+        <div class="sec-h"><span class="eb">My students</span><h3 class="sec-t">One view of each student, from every teacher</h3></div>
+        <div class="pnl"><div class="s360"><div class="slist" id="slist"></div><div id="sdet"></div></div></div>
+      </section>
 
-    <script src="script.js"></script>
-  </body>
+      <section class="sec" id="t-subject">
+        <div class="sec-h"><span class="eb">My subject</span><h3 class="sec-t">How Maths is going, and how I'm doing</h3></div>
+        <div class="grid">
+          <div class="pnl c7">
+            <div class="pnl-h"><span class="pnl-t">Who understands what</span><span class="pnl-s">Quizzes, homework and classwork</span></div>
+            <div class="heat" id="heat" role="img" aria-label="Concept mastery by student. Five students are stuck on fractions."></div>
+            <div class="hlegend"><span style="--st:var(--need)"><i></i>Needs help</span><span style="--st:var(--good)"><i></i>Solid or strong</span><span>+30 more students</span></div>
+          </div>
+          <div class="pnl c5">
+            <div class="pnl-h"><span class="pnl-t">Feedback on my teaching</span><span class="pnl-s">31 student responses</span></div>
+            <div id="fbk"></div>
+            <p class="insight note"><b style="color:var(--ink)">Parents said:</b> more fractions practice at home (9), earlier notice of tests (6).</p>
+          </div>
+          <div class="pnl c12">
+            <div class="pnl-h"><span class="pnl-t">Class 8B across subjects</span><span class="pnl-s">Bar = 8B · line = Section 8A</span></div>
+            <div class="cols" id="cols"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="t-test">
+        <div class="sec-h"><span class="eb">Create a test</span><h3 class="sec-t">A test for this class, in seconds</h3></div>
+        <div class="pnl"><div class="tb">
+          <div class="tb-c">
+            <div><p class="tb-l">Chapter</p><div class="chips" id="chaps"><button class="chip" aria-pressed="true" data-chap="Fractions">Fractions</button><button class="chip" aria-pressed="false" data-chap="Ratios">Ratios</button><button class="chip" aria-pressed="false" data-chap="Algebra basics">Algebra basics</button></div></div>
+            <div class="sw-row"><div><p class="sw-t">Adapt to my class</p><p class="note">Uses who is stuck on what</p></div><button class="sw" role="switch" aria-checked="true" aria-label="Adapt to my class" id="adapt"></button></div>
+            <button class="b b-acc" id="gen" style="justify-content:center;padding:.85rem">Generate test</button>
+          </div>
+          <div class="tb-out" id="tout" data-resolvable><div class="tb-empty">Pick a chapter and generate. Questions, answer key and marking scheme are prepared for your review.</div></div>
+        </div></div>
+      </section>
+
+      <section class="sec" id="t-msg">
+        <div class="sec-h"><span class="eb">Messages</span><h3 class="sec-t">Parents, with replies already drafted</h3></div>
+        <div class="pnl"><ul class="q-list">
+          <li class="q-item" data-resolvable data-need data-label="Reply: Rohan's mother"><span class="mk mk-need"></span><div><p class="q-t">Rohan's mother: "Can Rohan get extra fractions practice?"</p><p class="q-d">Received 20 min ago · Rohan is stuck on fractions.</p>
+            <div class="q-act"><button class="b b-acc" data-go data-msg="Sent, with a 10-minute daily practice set attached.">Send suggested reply</button><button class="b" data-why data-open="Hide draft" data-closed="See draft" aria-expanded="false">See draft</button></div>
+            <p class="trace" hidden>Thank you for asking. Rohan is improving in geometry, and fractions are the next step. I've attached a 10-minute daily set, and he can join the small group on Tuesdays and Thursdays.</p><p class="q-msg"></p></div></li>
+          <li class="q-item" data-resolvable data-need data-label="Reply: Meera's father"><span class="mk mk-need"></span><div><p class="q-t">Meera's father: "She wants more art in the timetable."</p><p class="q-d">Received yesterday · Art is Meera's top interest.</p>
+            <div class="q-act"><button class="b b-acc" data-go data-msg="Sent, and the request was shared with the art teacher.">Send suggested reply</button><button class="b" data-why data-open="Hide draft" data-closed="See draft" aria-expanded="false">See draft</button></div>
+            <p class="trace" hidden>Meera's poster was selected for the school display, well done. I've shared your note with Ms. Nair about the Saturday art club and will confirm a place.</p><p class="q-msg"></p></div></li>
+          <li class="q-item" data-resolvable data-need data-label="Send 4 progress notes"><span class="mk mk-need"></span><div><p class="q-t">4 progress notes ready to send</p><p class="q-d">Rohan, Meera, Sara, Ishaan · Each starts with a strength.</p>
+            <div class="q-act"><button class="b b-acc" data-go data-msg="4 notes sent in each family's language.">Approve all 4</button><button class="b" data-why data-open="Hide draft" data-closed="See sample" aria-expanded="false">See sample</button></div>
+            <p class="trace" hidden>Sara has been consistent with homework this month. One area to work on is fractions, and a short daily set is attached to help.</p><p class="q-msg"></p></div></li>
+        </ul></div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ PARENT ============ -->
+<div class="screen" data-role="parent" id="scr-parent" role="tabpanel" aria-labelledby="tab-parent" hidden>
+  <aside class="side">
+    <div class="side-who"><span class="av">A</span><div><b>Aarav</b><br><span class="note">Class 8B</span></div></div>
+    <button class="nav-i" data-nav="p-over" aria-current="true"><span data-ic="home"></span>Overview</button>
+    <button class="nav-i" data-nav="p-reports" aria-current="false"><span data-ic="doc"></span>Reports</button>
+    <button class="nav-i" data-nav="p-grow" aria-current="false"><span data-ic="star"></span>Beyond marks</button>
+    <button class="nav-i" data-nav="p-msg" aria-current="false"><span data-ic="chat"></span>Messages</button>
+    <button class="nav-i" data-nav="p-soon" aria-current="false"><span data-ic="cal"></span>Coming up</button>
+    <p class="side-foot">Only you and school staff can see this.</p>
+  </aside>
+  <div class="mainc">
+    <div class="topbar"><p class="tb-t">Aarav is doing well. <span data-needs-line></span></p><span class="live"><i></i>2 new messages</span></div>
+    <div class="scroll">
+
+      <section class="sec" id="p-over">
+        <div class="ask">
+          <div class="ask-box"><span data-ic="spark"></span><span class="ask-q">Ask about Aarav</span></div>
+          <div class="ask-chips">
+            <button class="chip" data-q="Why did Aarav's science marks dip?" data-a="His last two science tests were on electricity, where diagrams carry most marks. His teacher has added two short diagram practice sets. Other topics are steady." data-src="Based on: test papers, teacher notes">Why did Aarav's science marks dip?</button>
+            <button class="chip" data-q="What should Aarav practise this week?" data-a="Ten minutes a day on ratios before Wednesday's test, and one diagram set for science. Both are already in his plan." data-src="Based on: upcoming tests, recent answers">What should Aarav practise this week?</button>
+            <button class="chip" data-q="Can I pay in parts?" data-a="Yes. The ₹6,200 installment can be split into two payments, one by 12 Oct and one by 26 Oct. No late fee applies under this plan." data-src="Based on: your institution's fee policy">Can I pay in parts?</button>
+          </div>
+          <p class="ask-ans" hidden></p>
+        </div>
+        <div class="needs" data-needs-strip></div>
+        <div class="grid">
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Attendance</span><span class="kpi-v" data-to="96" data-suf="%">96%</span><span class="kpi-d">Up from 91%</span></div></div></div>
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Average marks</span><span class="kpi-v" data-to="72" data-suf="%">72%</span><span class="kpi-d"><span class="up">▲ 2 pts</span> since last exam</span></div><svg class="spark" data-spark="66,68,70,72"></svg></div></div>
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Homework</span><span class="kpi-v" data-to="100" data-suf="%">100%</span><span class="kpi-d">All submitted</span></div></div></div>
+          <div class="pnl c3"><div class="kpi"><div><span class="kpi-l">Next test</span><span class="kpi-v">Wed</span><span class="kpi-d">Maths, Chapter 8</span></div></div></div>
+        </div>
+        <div class="grid">
+          <div class="pnl c7">
+            <div class="pnl-h"><span class="pnl-t">Progress by subject</span><span class="pnl-s">Last 6 tests</span></div>
+            <div class="chart" id="ch-subjects"></div>
+            <p class="insight">Aarav attended every day and finished all homework. Maths is improving after extra practice. Science needs attention on diagrams, and his teacher has added practice for it.</p>
+          </div>
+          <div class="pnl c5" data-resolvable data-need data-label="Pay ₹6,200">
+            <div class="pnl-h"><span class="pnl-t">Next fee installment</span></div>
+            <p class="fee-amt">₹6,200</p><p class="note">Due 12 Oct</p>
+            <div class="inst" aria-hidden="true"><span class="p"></span><span class="p"></span><span class="d"></span><span></span></div>
+            <div class="inst-l" aria-hidden="true"><span>Apr</span><span>Jul</span><span>Oct</span><span>Jan</span></div>
+            <div class="q-act"><button class="b b-acc" data-go data-msg="Paid. Receipt saved and sent to your phone.">Pay ₹6,200</button><button class="b" data-ask-plan>Need more time?</button></div>
+            <p class="q-msg"></p>
+            <div class="insight"><div class="pnl-h" style="margin-bottom:.4rem"><span class="pnl-t">Attendance, last 5 weeks</span></div>
+              <div class="cal-h" aria-hidden="true"><i>M</i><i>T</i><i>W</i><i>T</i><i>F</i></div><div class="cal" id="cal" role="img" aria-label="23 of 25 days present"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="p-reports">
+        <div class="sec-h"><span class="eb">Reports</span><h3 class="sec-t">Every exam, ready to download</h3></div>
+        <div class="pnl">
+          <div class="rp-w">
+            <div class="rp hd"><span>Exam</span><span>Total</span><span>Maths</span><span>Science</span><span>English</span><span></span></div>
+            <div class="rp"><span><b>Unit Test 3</b><br><span class="note">September</span></span><b>72%</b><span>74</span><span>66</span><span>75</span><button class="b" data-dl>Download PDF</button></div>
+            <div class="rp"><span><b>Term 1</b><br><span class="note">August</span></span><b>70%</b><span>71</span><span>70</span><span>74</span><button class="b" data-dl>Download PDF</button></div>
+            <div class="rp"><span><b>Unit Test 2</b><br><span class="note">July</span></span><b>68%</b><span>68</span><span>76</span><span>73</span><button class="b" data-dl>Download PDF</button></div>
+            <div class="rp"><span><b>Unit Test 1</b><br><span class="note">June</span></span><b>66%</b><span>64</span><span>79</span><span>71</span><button class="b" data-dl>Download PDF</button></div>
+          </div>
+          <p class="insight note">Each report includes teacher comments and a short summary of what to work on next.</p>
+        </div>
+      </section>
+
+      <section class="sec" id="p-grow">
+        <div class="sec-h"><span class="eb">Beyond marks</span><h3 class="sec-t">Sports, arts and interests, and how Aarav is doing</h3></div>
+        <div class="acts">
+          <div class="act"><div class="act-h"><b>Music</b><span class="tag">Grade B+</span></div><span class="sb-t" style="background:var(--soft)"><span class="sb-f" style="width:72%"></span></span><p class="note" style="margin-top:.5rem">Ms. Das: "Keen and consistent. Ready for a grade exam." Missed 2 rehearsals for tuition.</p><div class="act-p"><span>Aarav <span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i></span></span><span>You <span class="pips"><i class="on"></i><i class="on"></i><i></i></span></span></div></div>
+          <div class="act"><div class="act-h"><b>Football</b><span class="tag">Runner-up</span></div><span class="sb-t" style="background:var(--soft)"><span class="sb-f" style="width:80%"></span></span><p class="note" style="margin-top:.5rem">Coach: "Great stamina." Inter-house runner-up in September.</p><div class="act-p"><span>Aarav <span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i></span></span><span>You <span class="pips"><i class="on"></i><i class="on"></i><i></i></span></span></div></div>
+          <div class="act"><div class="act-h"><b>Art</b><span class="tag">Steady</span></div><span class="sb-t" style="background:var(--soft)"><span class="sb-f" style="width:60%"></span></span><p class="note" style="margin-top:.5rem">Ms. Nair: "Careful with colour. Try bolder compositions."</p><div class="act-p"><span>Aarav <span class="pips"><i class="on"></i><i></i><i></i></span></span><span>You <span class="pips"><i class="on"></i><i></i><i></i></span></span></div></div>
+          <div class="act"><div class="act-h"><b>Science club</b><span class="tag tag-need">Needs a nudge</span></div><span class="sb-t" style="background:var(--soft)"><span class="sb-f" style="width:58%"></span></span><p class="note" style="margin-top:.5rem">Diagrams are the gap. Practice is queued and Mr. Khan is keeping an eye on it.</p><div class="act-p"><span>Aarav <span class="pips"><i class="on"></i><i class="on"></i><i></i></span></span><span>You <span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i></span></span></div></div>
+        </div>
+        <div class="sugg" data-resolvable><span class="mk mk-info"></span><div><p><b>Suggestion:</b> the Junior Music Club meets Saturdays at 10 am. It fits Aarav's interest and doesn't clash with tuition.</p>
+          <div class="q-act"><button class="b b-acc" data-go data-msg="Interest sent to Ms. Das. She will confirm a place.">Express interest</button></div><p class="q-msg"></p></div></div>
+      </section>
+
+      <section class="sec" id="p-msg">
+        <div class="sec-h"><span class="eb">Messages</span><h3 class="sec-t">What teachers say, and messages from school</h3></div>
+        <div class="grid">
+          <div class="pnl c6">
+            <div class="pnl-h"><span class="pnl-t">What his teachers say</span></div>
+            <div class="sbox" style="background:none;padding:0">
+              <div class="quote">Aarav asks good questions and improves steadily. Fractions are now much stronger.<small>Ms. Rao · Maths, class teacher</small></div>
+              <div class="quote">Strong on ideas, loses marks on diagrams. Two practice sets assigned.<small>Mr. Khan · Science</small></div>
+              <div class="quote">Writes with confidence. Vocabulary is growing.<small>Ms. Iyer · English</small></div>
+            </div>
+          </div>
+          <div class="pnl c6">
+            <div class="pnl-h"><span class="pnl-t">From school</span><span class="pnl-s">2 new</span></div>
+            <ul class="q-list">
+              <li class="q-item" data-resolvable data-need data-label="Confirm PTM slot"><span class="mk mk-need"></span><div><p class="q-t">Ms. Rao: Parent meeting, Saturday 10:00?</p><p class="q-d">Class teacher · 1 hour ago</p>
+                <div class="q-act"><button class="b b-acc" data-go data-msg="Confirmed for Saturday 10:00. Added to your calendar.">Confirm 10:00</button><button class="b" data-ask-slot>Suggest another time</button></div><p class="q-msg"></p></div></li>
+              <li class="q-item"><span class="mk mk-need"></span><div><p class="q-t">Transport desk: Route 4 may run 30 minutes late tomorrow</p><p class="q-d">Heavy rain forecast · 3 hours ago</p></div></li>
+              <li class="q-item"><span class="mk mk-info"></span><div><p class="q-t">Principal's office: Annual Day rehearsals begin Monday</p><p class="q-d">Circular · yesterday</p></div></li>
+            </ul>
+          </div>
+          <div class="pnl c12">
+            <div class="pnl-h"><span class="pnl-t">Who can see Aarav's records</span><span class="pnl-s">Every view is logged</span></div>
+            <div class="sw-row"><div><p class="sw-t">Institution staff</p><p class="note">Teachers and administration. Always on.</p></div><button class="sw" role="switch" aria-checked="true" aria-label="Institution staff, always on" disabled></button></div>
+            <div class="sw-row"><div><p class="sw-t">Maths tuition centre</p><p class="note">Marks and practice history only.</p></div><button class="sw" role="switch" aria-checked="false" aria-label="Share with tuition centre" data-switch></button></div>
+            <div class="sw-row"><div><p class="sw-t">Scholarship application</p><p class="note">Verified results, until 30 Nov.</p></div><button class="sw" role="switch" aria-checked="true" aria-label="Share with scholarship application" data-switch></button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="p-soon">
+        <div class="sec-h"><span class="eb">Coming up</span><h3 class="sec-t">Reminders, so nothing is a surprise</h3></div>
+        <div class="pnl">
+          <div class="ev"><div class="dt"><b>26</b><span>Sat</span></div><div><p class="ev-t">Parent meeting, 10:00</p><p class="note">With Ms. Rao</p></div><button class="sw" role="switch" aria-checked="true" aria-label="Remind me about the parent meeting" data-switch></button></div>
+          <div class="ev"><div class="dt"><b>28</b><span>Mon</span></div><div><p class="ev-t">Science project due</p><p class="note">Aarav has finished about 60%</p></div><button class="sw" role="switch" aria-checked="true" aria-label="Remind me about the science project" data-switch></button></div>
+          <div class="ev"><div class="dt"><b>30</b><span>Wed</span></div><div><p class="ev-t">Maths test, Chapter 8</p><p class="note">Practice is already in his plan</p></div><button class="sw" role="switch" aria-checked="true" aria-label="Remind me about the maths test" data-switch></button></div>
+          <div class="ev"><div class="dt"><b>12</b><span>Oct</span></div><div><p class="ev-t">Fee installment due</p><p class="note">₹6,200 · can be split in two</p></div><button class="sw" role="switch" aria-checked="true" aria-label="Remind me about the fee installment" data-switch></button></div>
+          <div class="ev"><div class="dt"><b>24</b><span>Oct</span></div><div><p class="ev-t">Annual Sports Day</p><p class="note">Aarav is in the 4×100 relay</p></div><button class="sw" role="switch" aria-checked="false" aria-label="Remind me about Sports Day" data-switch></button></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ STUDENT ============ -->
+<div class="screen" data-role="student" id="scr-student" role="tabpanel" aria-labelledby="tab-student" hidden>
+  <aside class="side">
+    <div class="side-who"><span class="av">A</span><div><b>Aarav</b><br><span class="note">Class 8B</span></div></div>
+    <button class="nav-i" data-nav="s-today" aria-current="true"><span data-ic="home"></span>Today</button>
+    <button class="nav-i" data-nav="s-practice" aria-current="false"><span data-ic="edit"></span>Practice</button>
+    <button class="nav-i" data-nav="s-grow" aria-current="false"><span data-ic="target"></span>My growth</button>
+    <button class="nav-i" data-nav="s-soon" aria-current="false"><span data-ic="cal"></span>Coming up</button>
+    <p class="side-foot">6 day streak</p>
+  </aside>
+  <div class="mainc">
+    <div class="topbar"><p class="tb-t">Hi Aarav. Wednesday's test is in 3 days.</p><span class="live"><i></i>6 day streak</span></div>
+    <div class="scroll">
+
+      <section class="sec" id="s-today">
+        <div class="ask">
+          <div class="ask-box"><span data-ic="spark"></span><span class="ask-q">Ask your tutor</span></div>
+          <div class="ask-chips">
+            <button class="chip" data-q="Explain ratios like I'm new" data-a="A ratio compares two amounts that grow together. If 3 cups of flour go with 2 cups of sugar, then 6 cups of flour go with 4 cups of sugar. You multiplied both sides by 2. Try the first practice question next." data-src="Based on: your last 6 ratio questions">Explain ratios like I'm new</button>
+            <button class="chip" data-q="What should I do first?" data-a="Start with the 15-minute ratios set. It targets one habit: in 4 of your last 6 ratio questions you added instead of multiplying." data-src="Based on: your answers this week">What should I do first?</button>
+          </div>
+          <p class="ask-ans" hidden></p>
+        </div>
+        <div class="grid">
+          <div class="pnl c4">
+            <div class="pnl-h"><span class="pnl-t">Ready for Wednesday</span><span class="pnl-s"><span class="up">▲ 14 pts</span> since Friday</span></div>
+            <div class="gauge"><svg viewBox="0 0 140 80" role="img" aria-label="72 percent ready"><path class="g-bg" d="M10 72 A60 60 0 0 1 130 72" pathLength="100"/><path class="g-fg" d="M10 72 A60 60 0 0 1 130 72" pathLength="100" stroke-dasharray="72 100"/></svg><span class="gauge-v">72%</span></div>
+            <p class="note" style="margin-top:.7rem;text-align:center">Weakest: fractions and ratios</p>
+          </div>
+          <div class="pnl c4">
+            <div class="pnl-h"><span class="pnl-t">Today's plan</span><span class="pnl-s"><span data-tasks>0</span> of 3 done</span></div>
+            <div class="tasks">
+              <button class="task" role="checkbox" aria-checked="false"><span class="tk" data-ic="check12"></span><span class="task-t">Ratios practice set</span><span class="task-m">15 min</span></button>
+              <button class="task" role="checkbox" aria-checked="false"><span class="tk" data-ic="check12"></span><span class="task-t">Watch: common denominators</span><span class="task-m">8 min</span></button>
+              <button class="task" role="checkbox" aria-checked="false"><span class="tk" data-ic="check12"></span><span class="task-t">Quick check: fractions</span><span class="task-m">5 min</span></button>
+            </div>
+          </div>
+          <div class="pnl c4"><div class="pnl-h"><span class="pnl-t">Skill map</span><span class="pnl-s">Now vs 3 weeks ago</span></div><div class="radar" id="radar"></div></div>
+        </div>
+      </section>
+
+      <section class="sec" id="s-practice">
+        <div class="sec-h"><span class="eb">Practice</span><h3 class="sec-t">Built from your own mistakes</h3></div>
+        <div class="grid">
+          <div class="pnl c7">
+            <div class="pnl-h"><span class="pnl-t">Ratios practice</span><span class="pnl-s">Question 2 of 6</span></div>
+            <div class="pattern"><span class="mk mk-info"></span><p><b>Pattern spotted.</b> In 4 of your last 6 ratio questions you added the same number to both sides. This set is built around that.</p></div>
+            <div class="wf">
+              <div class="wf-s done"><span class="wf-n">Spotted</span><span class="wf-l">the pattern</span></div>
+              <div class="wf-s done"><span class="wf-n">Built</span><span class="wf-l">your set</span></div>
+              <div class="wf-s now"><span class="wf-n">Your turn</span><span class="wf-l">15 min</span></div>
+              <div class="wf-s"><span class="wf-n">Re-check</span><span class="wf-l">on Friday</span></div>
+            </div>
+            <p style="margin-top:1rem"><b>3 cups of flour go with 2 cups of sugar. How much flour for 6 cups of sugar?</b></p>
+            <div class="opts"><button class="opt" data-ok="0">7 cups</button><button class="opt" data-ok="1">9 cups</button><button class="opt" data-ok="0">8 cups</button></div>
+            <p class="fb" id="fb" aria-live="polite"></p>
+            <div class="q-act"><button class="b" id="hintbtn" aria-expanded="false">Show a hint</button></div>
+            <p class="note" id="hint" hidden style="margin-top:.5rem">Sugar went from 2 to 6. What did you multiply by? Do the same to the flour.</p>
+          </div>
+          <div class="pnl c5">
+            <div class="pnl-h"><span class="pnl-t">Your mastery</span><span class="tag tag-acc">6 day streak</span></div>
+            <div class="chart" id="ch-progress"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="s-grow">
+        <div class="sec-h"><span class="eb">My growth</span><h3 class="sec-t">What I want to get better at</h3></div>
+        <div class="grid">
+          <div class="pnl c7">
+            <div class="pnl-h"><span class="pnl-t">My goals</span><span class="pnl-s">Set by me, supported by my teachers</span></div>
+            <div class="sb" style="grid-template-columns:80px 1fr 34px"><span>Music</span><span class="sb-t"><span class="sb-f" style="width:72%"></span></span><b>72</b></div><p class="note">Band rehearsal Saturdays. Next step: practise scales for 10 minutes a day.</p>
+            <div class="sb" style="grid-template-columns:80px 1fr 34px;margin-top:.9rem"><span>Football</span><span class="sb-t"><span class="sb-f" style="width:80%"></span></span><b>80</b></div><p class="note">Coach's tip: work on your left foot after school on Tuesdays.</p>
+            <div class="sb" style="grid-template-columns:80px 1fr 34px;margin-top:.9rem"><span>Science</span><span class="sb-t"><span class="sb-f" style="width:58%"></span></span><b>58</b></div><p class="note">Diagram practice set added to this week's plan.</p>
+          </div>
+          <div class="pnl c5">
+            <div class="pnl-h"><span class="pnl-t">Verified achievements</span><span class="pnl-s">Yours to share</span></div>
+            <div class="badge-row"><span class="mk mk-done"><span data-ic="check12"></span></span><p><b>Maths Olympiad, Level 1</b><br><span class="note">Verified by your institution.</span></p></div>
+            <div class="badge-row"><span class="mk mk-done"><span data-ic="check12"></span></span><p><b>Inter-house football, runner-up</b><br><span class="note">Verified by your institution.</span></p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="s-soon">
+        <div class="sec-h"><span class="eb">Coming up</span><h3 class="sec-t">What's next</h3></div>
+        <div class="pnl">
+          <div class="ev"><div class="dt"><b>28</b><span>Mon</span></div><div><p class="ev-t">Science project due</p><p class="note">About 60% done</p></div><span class="tag">On track</span></div>
+          <div class="ev"><div class="dt"><b>30</b><span>Wed</span></div><div><p class="ev-t">Maths test, Chapter 8</p><p class="note">You're 72% ready</p></div><span class="tag tag-need">Practise ratios</span></div>
+          <div class="ev"><div class="dt"><b>24</b><span>Oct</span></div><div><p class="ev-t">Annual Sports Day</p><p class="note">4×100 relay</p></div><span class="tag">Selected</span></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+    </div><!-- /win -->
+    <div class="legend-row" style="margin-top:1rem" aria-label="Legend">
+      <span><i class="mk mk-done" style="width:14px;height:14px;margin:0"></i>Already done by RILEN</span>
+      <span><i class="mk mk-need" style="width:14px;height:14px;margin:0"></i>Needs a person</span>
+      <span><i class="mk mk-info" style="width:14px;height:14px;margin:0;border-width:1.5px"></i>Worth knowing</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHAT PEOPLE STOP DOING ================= -->
+<section class="section" id="work" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2">What is a person still doing that RILEN should already have done?</h2>
+      <p class="lede">We ask that question of every workflow. Anything repetitive moves to RILEN. What is left is judgment, conversation and care.</p>
+    </div>
+    <div class="swap-head" aria-hidden="true"><span>Done by hand today</span><span></span><span>Done by RILEN</span></div>
+    <div>
+      <div class="swap-row"><p class="swap-from">Chasing payments over WhatsApp and phone calls</p><span class="swap-arrow" aria-hidden="true" data-ic="arrow"></span><p class="swap-to">Reminders prepared and sent at the right time. You step in only when a conversation is needed.</p></div>
+      <div class="swap-row"><p class="swap-from">Rebuilding the timetable by hand when a teacher is absent</p><span class="swap-arrow" aria-hidden="true" data-ic="arrow"></span><p class="swap-to">A new timetable proposed in minutes, with cover teachers and lesson plans arranged.</p></div>
+      <div class="swap-row"><p class="swap-from">Finding out a student is struggling when results arrive</p><span class="swap-arrow" aria-hidden="true" data-ic="arrow"></span><p class="swap-to">Early signals from attendance, marks and classwork, weeks before the report card.</p></div>
+      <div class="swap-row"><p class="swap-from">Writing the same message to thirty parents</p><span class="swap-arrow" aria-hidden="true" data-ic="arrow"></span><p class="swap-to">Clear, personal drafts ready for a quick approval.</p></div>
+      <div class="swap-row" style="border-bottom:1px solid var(--line)"><p class="swap-from">Building reports before every meeting</p><span class="swap-arrow" aria-hidden="true" data-ic="arrow"></span><p class="swap-to">The brief is ready before you ask for it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PEOPLE ================= -->
+<section class="section" id="people" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2">One system. Everyone sees what matters to them.</h2>
+      <p class="lede">RILEN connects the people around learning, and shows each of them a different, simpler view.</p>
+    </div>
+    <div>
+      <div class="person"><div><h3 class="person-name">Institutions</h3><p class="muted">Leaders and administrators who want clarity without digging through reports.</p></div>
+        <ul class="person-list"><li>See what is happening on campus right now, and what changed since yesterday.</li><li>Absences, bus delays and weather handled with a ready plan you approve.</li><li>Know how you compare with similar institutions, and how to improve.</li></ul></div>
+      <div class="person"><div><h3 class="person-name">Teachers</h3><p class="muted">Less preparation and paperwork, more time with learners.</p></div>
+        <ul class="person-list"><li>See each student across every subject, with colleagues' reviews and interests.</li><li>Know your syllabus progress and how your teaching is landing.</li><li>Create a test in seconds and reply to parents with drafts ready.</li></ul></div>
+      <div class="person"><div><h3 class="person-name">Students</h3><p class="muted">Support that arrives before a small gap becomes a big one.</p></div>
+        <ul class="person-list"><li>Practice built from the exact questions you found difficult.</li><li>Goals in music, sport and study, with a plan to get there.</li><li>A verified record of your progress that belongs to you.</li></ul></div>
+      <div class="person" style="border-bottom:1px solid var(--line)"><div><h3 class="person-name">Parents</h3><p class="muted">Clear, calm communication instead of chasing and confusion.</p></div>
+        <ul class="person-list"><li>Reports for every exam, with what teachers say, ready to download.</li><li>Progress in sports, arts and interests, not only marks.</li><li>Messages, reminders and fees in one place, with control over who sees records.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT THINKS ================= -->
+<section class="section" id="thinking" style="padding-top:0">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2">From what happened to what should happen next.</h2>
+      <p class="lede">RILEN takes every institution through four steps. Each one removes work from someone's day.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><h3 class="h3">Clarity</h3><p class="step-q">What happened?</p><p class="step-d">Payments, attendance, marks and records in one connected picture, not scattered across files and apps.</p></div>
+      <div class="step"><h3 class="h3">Decisions</h3><p class="step-q">Why, and what is likely next?</p><p class="step-d">Patterns, unusual changes and early risks, explained in plain words.</p></div>
+      <div class="step"><h3 class="h3">Next actions</h3><p class="step-q">What should we do?</p><p class="step-d">A short, ordered list: who to call, what to send, what to approve.</p></div>
+      <div class="step step-last"><h3 class="h3">Automation</h3><p class="step-q">Can RILEN safely do it?</p><p class="step-d">Routine steps run on their own. Anything sensitive waits for a person.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRUST ================= -->
+<section class="band section" id="trust">
+  <div class="wrap band-grid">
+    <div>
+      <h2 class="h2">RILEN prepares. People decide.</h2>
+      <p class="band-lede">Education data is personal and often financial. RILEN keeps automation inside clear limits, so trust grows with use.</p>
+    </div>
+    <div>
+      <div class="rule"><p class="rule-t">Nothing sensitive changes silently</p><p class="rule-d">Financial and student records are never altered without explicit approval. Mistakes are fixed with visible corrections, not overwrites.</p></div>
+      <div class="rule"><p class="rule-t">Every action leaves a trail</p><p class="rule-d">Who did what, when and why is always recorded, including what RILEN recommended and what a person chose.</p></div>
+      <div class="rule"><p class="rule-t">Each institution's data stays its own</p><p class="rule-d">Strict separation between institutions, and access limited to what each role actually needs.</p></div>
+      <div class="rule"><p class="rule-t">No hidden scores about people</p><p class="rule-d">RILEN does not rank or blacklist students, parents or teachers. It provides verified facts and context. The institution decides.</p></div>
+      <div class="rule"><p class="rule-t">Sharing only with consent</p><p class="rule-d">Anything shared beyond one institution is for a stated purpose, can be audited, and is controlled by the people it concerns.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ROADMAP ================= -->
+<section class="section" id="roadmap">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 class="h2">Starting where the need is clearest.</h2>
+      <p class="lede">We are building RILEN with a first partner institution, beginning with fee collection because it is urgent, measurable and easy to prove. The rest follows from real use.</p>
+    </div>
+    <div class="road">
+      <div class="road-item road-now"><p class="when">Now <span class="pill">Building with a partner</span></p><h3 class="h3">RILEN Fees</h3><p>Dues, collection, receipts, payment matching and follow-ups, shaped by the staff who use it every day.</p></div>
+      <div class="road-item"><p class="when">Next</p><h3 class="h3">Live campus, attendance and learning signals</h3><p>Connecting timetables, attendance and marks so disruptions and early concerns surface on their own.</p></div>
+      <div class="road-item"><p class="when">Then</p><h3 class="h3">Tools for teachers, students and parents</h3><p>Test creation, personal practice, reports and clear, timely parent updates.</p></div>
+      <div class="road-item"><p class="when">Later</p><h3 class="h3">A trusted network</h3><p>Verified student and teacher records that people own and choose to share, plus anonymous benchmarks between institutions.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap closing-copy">
+    <h2 class="h2">See your day with the routine work already done.</h2>
+    <p class="lede">We are onboarding a small number of institutions. Tell us about yours and we will be in touch.</p>
+    <a class="btn btn-main btn-lg" href="mailto:hello@rilen.app?subject=RILEN%20early%20access">Request early access</a>
+  </div>
+</section>
+</main>
+
+<footer class="foot"><div class="wrap foot-in"><span>RILEN</span><span>rilen.app</span><span>&copy; 2026 RILEN. All rights reserved.</span></div></footer>
+
+<script src="script.js" defer></script>
+</body>
 </html>
