@@ -50,13 +50,13 @@ institutions. Treat all real records as confidential and sensitive.
   produce a reviewable anomaly report, and keep raw files and generated inserts
   out of the repository.
 
-Repository-safe SQL may define schemas, migrations, constraints, indexes,
-functions, policies, and fictional development seeds. SQL containing real rows
-is not repository-safe.
+Repository-safe database code may define schemas, migrations, constraints,
+indexes, functions, policies, and fictional development seeds. Any script or
+file containing real records is not repository-safe.
 
 ## 3. Secrets And Configuration
 
-- Never commit passwords, API keys, service-role keys, access tokens, private
+- Never commit passwords, API keys, privileged service credentials, access tokens, private
   certificates, database URLs with credentials, session values, or webhook
   secrets.
 - Keep local secrets in an ignored secret store or environment configuration.
@@ -141,8 +141,8 @@ is not repository-safe.
   client-supplied institution ID alone.
 - Return the minimum data necessary. Never expose internal columns, secrets,
   stack traces, SQL errors, or cross-tenant information.
-- Use parameterized queries or trusted query builders. Never concatenate
-  untrusted values into SQL.
+- Use parameterized data operations or trusted data-access libraries. Never
+  concatenate untrusted values into a query language or command.
 - Apply sensible pagination, bounded filters, timeouts, payload limits, and rate
   limits. Prevent unbounded list endpoints and expensive arbitrary queries.
 - Make retryable writes idempotent where duplicate payments, receipts,
@@ -166,8 +166,8 @@ is not repository-safe.
   reviewable, safely ordered, and compatible with existing data.
 - Do not rewrite or silently alter an already-applied migration. Add a new
   corrective migration.
-- Prefer normalized, atomic structures and explicit foreign keys. Add `NOT
-  NULL`, `CHECK`, uniqueness, and referential constraints where the business
+- Prefer normalized, atomic structures and explicit relationships. Add required
+  field, validation, uniqueness, and referential constraints where the business
   rule is real.
 - Add indexes for demonstrated access patterns, foreign keys, tenant scoping,
   common filters, and ordering. Avoid redundant indexes.
@@ -181,8 +181,8 @@ is not repository-safe.
   unique without an explicit scoped constraint.
 - Schema files may be committed. Real-data inserts, production dumps, and
   confidential migration helpers may not.
-- Before destructive or irreversible SQL, provide a backup/rollback strategy,
-  state the scope, and obtain explicit approval.
+- Before destructive or irreversible data operations, provide a backup or
+  rollback strategy, state the scope, and obtain explicit approval.
 
 ## 8. Security
 
