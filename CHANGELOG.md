@@ -4,6 +4,15 @@ All notable changes to RILEN are documented in this file.
 
 ## Unreleased
 
+### Database
+
+- Added a repository-safe student-directory schema migration defining student,
+  academic registration, guardian, address, and bank-account tables, including
+  relationships, validation constraints, indexes, and timestamp triggers. Run
+  it before the student security and fee-management scripts.
+- Removed the student security script's stale dependency on an undocumented
+  import-staging table.
+
 ### Added
 
 - Rebuilt the public RILEN website from the approved interactive prototype,

@@ -1,5 +1,5 @@
 -- RILEN student directory read access.
--- Run this after creating the student tables and after loading student data.
+-- Run this after student_directory_schema.sql. Data may be loaded afterward.
 -- Do not use a Supabase secret/service-role key in browser code.
 
 select 'students_before_policy' as check_name, count(*) as visible_in_sql_editor from public.students;
@@ -10,14 +10,12 @@ alter table public.student_academic_registrations enable row level security;
 alter table public.student_guardians enable row level security;
 alter table public.student_addresses enable row level security;
 alter table public.student_bank_accounts enable row level security;
-alter table public.student_import_rows enable row level security;
 
 revoke all on public.students from anon;
 revoke all on public.student_academic_registrations from anon;
 revoke all on public.student_guardians from anon;
 revoke all on public.student_addresses from anon;
 revoke all on public.student_bank_accounts from anon;
-revoke all on public.student_import_rows from anon;
 
 grant usage on schema public to authenticated;
 grant select on public.students to authenticated;
