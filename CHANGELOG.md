@@ -6,6 +6,11 @@ All notable changes to RILEN are documented in this file.
 
 ### Database
 
+- Added school tenants and authenticated user memberships, scoped student
+  access policies by school, and attached every student to a school.
+- Added per-school legacy fee-receipt references for one-time historical
+  imports, with tenant validation, duplicate protection, and searchable old
+  receipt numbers that remain separate from printed RILEN receipt numbers.
 - Added a repository-safe student-directory schema migration defining student,
   academic registration, guardian, address, and bank-account tables, including
   relationships, validation constraints, indexes, and timestamp triggers. Run

@@ -25,6 +25,7 @@ type FeeStudentRow = {
   received_fee: number | string | null;
   pending_fee: number | string | null;
   last_receipt_number: string | null;
+  legacy_receipt_numbers: string[] | null;
   last_payment_date: string | null;
   next_due_date: string | null;
   is_active: boolean;
@@ -224,6 +225,7 @@ function mapFeeStudent(row: FeeStudentRow): FeeStudentSummary {
     receivedFee: Number(row.received_fee ?? 0),
     pendingFee: Number(row.pending_fee ?? 0),
     lastReceiptNumber: row.last_receipt_number ?? "",
+    legacyReceiptNumbers: row.legacy_receipt_numbers ?? [],
     lastPaymentDate: row.last_payment_date ?? "",
     nextDueDate: row.next_due_date ?? "",
     isActive: row.is_active,

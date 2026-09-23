@@ -39,6 +39,7 @@ export function filterFeeStudents(students: FeeStudentSummary[], filters: FeeFil
         student.scholarNumber,
         student.admissionNumber,
         student.lastReceiptNumber,
+        ...student.legacyReceiptNumbers,
         student.lastPaymentDate,
       ]
         .join(" ")

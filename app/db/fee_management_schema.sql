@@ -174,6 +174,60 @@ create table if not exists public.fee_receipt_allocations (
   constraint fee_receipt_allocations_unique unique (receipt_id, student_fee_charge_id)
 );
 
+create table if not exists public.legacy_fee_receipt_references (
+  id uuid primary key default gen_random_uuid(),
+  school_id uuid not null references public.schools(id) on delete restrict,
+  fee_receipt_id uuid not null unique references public.fee_receipts(id) on delete restrict,
+  external_receipt_number text not null,
+  source_system text not null default 'legacy_import',
+  imported_at timestamptz not null default now(),
+  created_by uuid references auth.users(id) on delete set null,
+  created_at timestamptz not null default now(),
+  constraint legacy_receipts_number_not_blank check (btrim(external_receipt_number) <> ''),
+  constraint legacy_receipts_source_not_blank check (btrim(source_system) <> ''),
+  constraint legacy_receipts_school_number_unique unique (school_id, external_receipt_number)
+);
+
+-- The school is stored on the mapping to support an enforceable scoped unique
+-- key. This trigger prevents a mapping from being attached across tenants.
+create or replace function public.validate_legacy_fee_receipt_school()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $$
+declare
+  receipt_school_id uuid;
+begin
+  select student.school_id
+  into receipt_school_id
+  from public.fee_receipts receipt
+  join public.students student on student.id = receipt.student_id
+  where receipt.id = new.fee_receipt_id;
+
+  if receipt_school_id is null or receipt_school_id <> new.school_id then
+    raise exception 'Legacy receipt school does not match the RILEN receipt school';
+  end if;
+
+  return new;
+end;
+$$;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_trigger
+    where tgrelid = 'public.legacy_fee_receipt_references'::regclass
+      and tgname = 'validate_legacy_fee_receipt_school'
+      and not tgisinternal
+  ) then
+    execute 'create trigger validate_legacy_fee_receipt_school
+      before insert or update on public.legacy_fee_receipt_references
+      for each row execute function public.validate_legacy_fee_receipt_school()';
+  end if;
+end $$;
+
 create table if not exists public.fee_events (
   id uuid primary key default gen_random_uuid(),
   student_fee_account_id uuid references public.student_fee_accounts(id) on delete set null,
@@ -214,6 +268,9 @@ where status = 'POSTED';
 
 create index if not exists fee_receipts_number_search_idx
 on public.fee_receipts (receipt_number);
+
+create index if not exists legacy_fee_receipts_number_search_idx
+on public.legacy_fee_receipt_references (external_receipt_number);
 
 create or replace view public.fee_student_balances as
 with charge_totals as (
@@ -287,6 +344,12 @@ select
   fsb.received_fee,
   fsb.pending_fee,
   fsb.last_receipt_number,
+  coalesce((
+    select array_agg(distinct legacy.external_receipt_number order by legacy.external_receipt_number)
+    from public.fee_receipts receipt
+    join public.legacy_fee_receipt_references legacy on legacy.fee_receipt_id = receipt.id
+    where receipt.student_fee_account_id = fsb.student_fee_account_id
+  ), array[]::text[]) as legacy_receipt_numbers,
   fsb.last_payment_date,
   fsb.next_due_date,
   fsb.is_active
@@ -445,6 +508,7 @@ alter table public.fee_receipt_sequences enable row level security;
 alter table public.fee_receipts enable row level security;
 alter table public.fee_receipt_allocations enable row level security;
 alter table public.fee_events enable row level security;
+alter table public.legacy_fee_receipt_references enable row level security;
 
 grant usage on schema public to authenticated;
 grant select on public.fee_heads to authenticated;
@@ -456,6 +520,7 @@ grant select on public.student_fee_discounts to authenticated;
 grant select on public.fee_receipts to authenticated;
 grant select on public.fee_receipt_allocations to authenticated;
 grant select on public.fee_events to authenticated;
+grant select on public.legacy_fee_receipt_references to authenticated;
 grant select on public.fee_student_balances to authenticated;
 grant select on public.fee_dashboard_stats to authenticated;
 grant select on public.fee_student_directory to authenticated;
@@ -470,6 +535,7 @@ grant insert on public.fee_receipts to authenticated;
 grant update (status, voided_at, voided_by, void_reason) on public.fee_receipts to authenticated;
 grant insert on public.fee_receipt_allocations to authenticated;
 grant insert on public.fee_events to authenticated;
+grant insert on public.legacy_fee_receipt_references to authenticated;
 grant execute on function public.next_fee_receipt_number(text) to authenticated;
 grant execute on function public.refresh_fee_charge_status(uuid) to authenticated;
 
@@ -545,5 +611,15 @@ drop policy if exists "Authenticated users can create fee events" on public.fee_
 create policy "Authenticated users can create fee events"
 on public.fee_events for insert to authenticated
 with check (true);
+
+drop policy if exists "School members can read legacy receipt references" on public.legacy_fee_receipt_references;
+create policy "School members can read legacy receipt references"
+on public.legacy_fee_receipt_references for select to authenticated
+using (public.is_school_member(school_id));
+
+drop policy if exists "School members can create legacy receipt references" on public.legacy_fee_receipt_references;
+create policy "School members can create legacy receipt references"
+on public.legacy_fee_receipt_references for insert to authenticated
+with check (public.is_school_member(school_id));
 
 commit;

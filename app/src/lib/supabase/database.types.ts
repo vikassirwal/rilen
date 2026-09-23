@@ -3,9 +3,56 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      schools: {
+        Row: {
+          id: string;
+          code: string;
+          name: string;
+          legal_name: string | null;
+          timezone: string;
+          currency_code: string;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          code: string;
+          name: string;
+          legal_name?: string | null;
+          timezone?: string;
+          currency_code?: string;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["schools"]["Insert"]>;
+        Relationships: [];
+      };
+      school_user_memberships: {
+        Row: {
+          id: string;
+          school_id: string;
+          user_id: string;
+          role: string;
+          is_active: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          school_id: string;
+          user_id: string;
+          role: string;
+          is_active?: boolean;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["school_user_memberships"]["Insert"]>;
+        Relationships: [];
+      };
       students: {
         Row: {
           id: string;
+          school_id: string;
           first_name: string;
           last_name: string | null;
           date_of_birth: string | null;
@@ -20,6 +67,7 @@ export type Database = {
         };
         Insert: {
           id?: string;
+          school_id: string;
           first_name: string;
           last_name?: string | null;
           date_of_birth?: string | null;
@@ -38,6 +86,7 @@ export type Database = {
       student_academic_registrations: {
         Row: {
           id: string;
+          school_id: string;
           student_id: string;
           academic_year: string;
           class_name: string;
@@ -58,6 +107,7 @@ export type Database = {
         };
         Insert: {
           id?: string;
+          school_id: string;
           student_id: string;
           academic_year: string;
           class_name: string;

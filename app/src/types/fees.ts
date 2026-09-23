@@ -23,6 +23,7 @@ export type FeeStudentSummary = {
   receivedFee: number;
   pendingFee: number;
   lastReceiptNumber: string;
+  legacyReceiptNumbers: string[];
   lastPaymentDate: string;
   nextDueDate: string;
   isActive: boolean;
