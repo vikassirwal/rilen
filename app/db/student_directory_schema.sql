@@ -120,6 +120,20 @@ create table if not exists public.student_bank_accounts (
 create index if not exists student_bank_accounts_student_idx
   on public.student_bank_accounts (student_id);
 
+-- Fail closed as soon as the tables exist. The separate security migration
+-- grants only the intended authenticated operations and creates policies.
+alter table public.students enable row level security;
+alter table public.student_academic_registrations enable row level security;
+alter table public.student_guardians enable row level security;
+alter table public.student_addresses enable row level security;
+alter table public.student_bank_accounts enable row level security;
+
+revoke all on public.students from anon;
+revoke all on public.student_academic_registrations from anon;
+revoke all on public.student_guardians from anon;
+revoke all on public.student_addresses from anon;
+revoke all on public.student_bank_accounts from anon;
+
 create or replace function public.set_student_record_updated_at()
 returns trigger
 language plpgsql
@@ -131,15 +145,35 @@ begin
 end;
 $$;
 
-drop trigger if exists students_set_updated_at on public.students;
-create trigger students_set_updated_at
-before update on public.students
-for each row execute function public.set_student_record_updated_at();
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_trigger
+    where tgrelid = 'public.students'::regclass
+      and tgname = 'students_set_updated_at'
+      and not tgisinternal
+  ) then
+    execute 'create trigger students_set_updated_at
+      before update on public.students
+      for each row execute function public.set_student_record_updated_at()';
+  end if;
+end $$;
 
-drop trigger if exists student_registrations_set_updated_at on public.student_academic_registrations;
-create trigger student_registrations_set_updated_at
-before update on public.student_academic_registrations
-for each row execute function public.set_student_record_updated_at();
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_trigger
+    where tgrelid = 'public.student_academic_registrations'::regclass
+      and tgname = 'student_registrations_set_updated_at'
+      and not tgisinternal
+  ) then
+    execute 'create trigger student_registrations_set_updated_at
+      before update on public.student_academic_registrations
+      for each row execute function public.set_student_record_updated_at()';
+  end if;
+end $$;
 
 comment on table public.students is 'Core student identity record. Academic enrollment is stored separately.';
 comment on table public.student_academic_registrations is 'Student enrollment and class placement for one academic year.';

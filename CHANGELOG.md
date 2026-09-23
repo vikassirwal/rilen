@@ -12,6 +12,8 @@ All notable changes to RILEN are documented in this file.
   it before the student security and fee-management scripts.
 - Removed the student security script's stale dependency on an undocumented
   import-staging table.
+- Enabled row-level security during student-table creation and made timestamp
+  trigger setup non-destructive and repeatable.
 
 ### Added
 
