@@ -10,6 +10,7 @@ import { FeeStudentList } from "./components/FeeStudentList";
 import { FeeStudentModal } from "./components/FeeStudentModal";
 import { PrintableReceipt } from "./components/PrintableReceipt";
 import { useFeeDashboard, useFeeLedger } from "./hooks/useFeeDashboard";
+import { getUserSafeError } from "../../lib/errors";
 
 type FeeWorkspaceProps = {
   onBack: () => void;
@@ -30,6 +31,7 @@ export function FeeWorkspace({ onBack }: FeeWorkspaceProps) {
   const [isCollecting, setIsCollecting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [printReceipt, setPrintReceipt] = useState<FeeCollectionResult | null>(null);
+  const [collectionError, setCollectionError] = useState("");
   const { students, classOptions, stats, source, isLoading, error, refresh } = useFeeDashboard(filters);
   const ledger = useFeeLedger(selectedStudent, source);
 
@@ -41,15 +43,19 @@ export function FeeWorkspace({ onBack }: FeeWorkspaceProps) {
   }, [selectedStudent, students]);
 
   async function submitCollection(draft: CollectFeeDraft) {
-    if (!selectedStudent) return;
+    if (!selectedStudent) return false;
     setIsSaving(true);
+    setCollectionError("");
     try {
       const result = await collectFee(selectedStudent, draft, ledger.ledger.charges, source);
       setPrintReceipt(result);
       setIsCollecting(false);
       await refresh();
       await ledger.refresh();
-      return result;
+      return true;
+    } catch (caught) {
+      setCollectionError(getUserSafeError(caught, "Unable to collect the fee. No further action was taken."));
+      return false;
     } finally {
       setIsSaving(false);
     }
@@ -85,9 +91,15 @@ export function FeeWorkspace({ onBack }: FeeWorkspaceProps) {
         </div>
 
         {error && <div className="warning-strip">{error}</div>}
+        {collectionError && (
+          <div className="warning-strip" role="alert">
+            <strong>Collection failed</strong>
+            <span>{collectionError}</span>
+          </div>
+        )}
         {source === "sample" && (
           <div className="fee-preview-note">
-            Fee schema/data is not visible yet, so this screen is showing local preview data.
+            No live database is configured. This screen is showing clearly fictional preview data.
           </div>
         )}
 

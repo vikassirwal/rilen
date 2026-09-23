@@ -11,7 +11,7 @@ type CollectFeeModalProps = {
   charges: FeeCharge[];
   isSaving: boolean;
   onClose: () => void;
-  onSubmit: (draft: CollectFeeDraft) => Promise<unknown>;
+  onSubmit: (draft: CollectFeeDraft) => Promise<boolean>;
 };
 
 const defaultDraft: CollectFeeDraft = {
@@ -38,8 +38,8 @@ export function CollectFeeModal({ student, charges, isSaving, onClose, onSubmit 
     if (requiresReason) return;
     const confirmed = window.confirm("This will permanently create a fee receipt. Are you sure?");
     if (!confirmed) return;
-    await onSubmit(draft);
-    if (printAfterSave) {
+    const saved = await onSubmit(draft);
+    if (saved && printAfterSave) {
       window.setTimeout(() => window.print(), 50);
     }
   }

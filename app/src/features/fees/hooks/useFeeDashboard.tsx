@@ -2,6 +2,7 @@ import React from "react";
 import type { FeeFilters, FeeLedger, FeeStudentSummary } from "../../../types/fees";
 import { calculateStats, filterFeeStudents } from "../utils/feeMath";
 import { getFeeLedger, listFeeStudents, refreshFeeLedger, refreshFeeStudents } from "../api/feeRepository";
+import { getUserSafeError } from "../../../lib/errors";
 
 export function useFeeDashboard(filters: FeeFilters) {
   const [students, setStudents] = React.useState<FeeStudentSummary[]>([]);
@@ -17,7 +18,7 @@ export function useFeeDashboard(filters: FeeFilters) {
       setStudents(result.students);
       setSource(result.source);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Unable to load fee data.");
+      setError(getUserSafeError(caught, "Unable to load fee data. Please retry."));
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +56,7 @@ export function useFeeLedger(student: FeeStudentSummary | null, source: "supabas
           : await getFeeLedger(student.studentFeeAccountId, source),
       );
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Unable to load fee ledger.");
+      setError(getUserSafeError(caught, "Unable to load this fee ledger. Please retry."));
     } finally {
       setIsLoading(false);
     }

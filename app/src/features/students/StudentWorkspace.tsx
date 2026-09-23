@@ -125,17 +125,22 @@ export function StudentWorkspace({ onOpenFees }: StudentWorkspaceProps) {
         <section className="diagnostic-strip">
           <strong>Database check</strong>
           <span>Auth: {health.isAuthenticated ? "signed in" : "not signed in"}</span>
-          {health.userEmail && <span>User: {health.userEmail}</span>}
           <span>Visible students: {health.studentCount}</span>
           <span>Visible registrations: {health.registrationCount}</span>
           {(health.studentError || health.registrationError || health.authError) && (
-            <span>{health.studentError || health.registrationError || health.authError}</span>
+            <span>Access check failed. Verify account permissions, then refresh.</span>
           )}
         </section>
       )}
 
       {mode === "onboarding" ? (
         <div className="workspace workspace--form">
+          {source === "supabase" && (
+            <div className="warning-strip">
+              <strong>Preview only</strong>
+              <span>New student records are not saved until the secured onboarding endpoint is available.</span>
+            </div>
+          )}
           <StudentOnboardingForm
             students={students}
             onCreate={addStudent}
@@ -148,6 +153,12 @@ export function StudentWorkspace({ onOpenFees }: StudentWorkspaceProps) {
       ) : (
         <div className="workspace">
           <section className="directory-panel">
+            {error && (
+              <div className="warning-strip" role="alert">
+                <strong>Students unavailable</strong>
+                <span>{error}</span>
+              </div>
+            )}
             <StudentFiltersView
               filters={filters}
               classOptions={classOptions}

@@ -5,6 +5,7 @@ import { sampleStudents } from "../../../data/sampleStudents";
 import type { Student, StudentFilters } from "../../../types/student";
 import { filterStudents } from "../utils/studentSearch";
 import { getStudentDirectoryHealth, listStudents } from "../api/studentRepository";
+import { getUserSafeError } from "../../../lib/errors";
 
 export type DirectorySource = "supabase" | "demo";
 export type DirectoryHealth = Awaited<ReturnType<typeof getStudentDirectoryHealth>>;
@@ -69,9 +70,11 @@ export function useStudentDirectory(filters: StudentFilters) {
         }
       } catch (loadError) {
         if (!cancelled) {
-          setStudents(filterStudents(sampleStudents, filters));
-          setSource("demo");
-          setError(loadError instanceof Error ? loadError.message : "Unable to load students.");
+          // A configured live connection must fail visibly; substituting demo
+          // records could cause an operator to mistake fictional data for live data.
+          setStudents([]);
+          setSource("supabase");
+          setError(getUserSafeError(loadError, "Unable to load student records. Please retry."));
         }
       } finally {
         if (!cancelled) {

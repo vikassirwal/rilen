@@ -97,8 +97,20 @@ file containing real records is not repository-safe.
 - Validate all data at trust boundaries. Types alone do not validate runtime
   input.
 - Handle loading, empty, error, stale, unauthorized, and partial-data states.
-- Comments should explain decisions or non-obvious constraints, not restate the
-  code.
+- Add concise comments or function documentation wherever a future maintainer
+  would otherwise need to reverse-engineer intent. This includes complex
+  functions, non-obvious business rules, security and privacy decisions,
+  financial calculations, data transformations, important invariants,
+  workarounds, unusual edge cases, and logic whose correctness depends on
+  external policy or domain context.
+- Document a function's contract when its purpose, inputs, outputs, side
+  effects, failure behavior, or assumptions are not obvious from its name and
+  types. Keep documentation next to the function or logic it explains.
+- Explain why a decision or algorithm exists and what must remain true. Do not
+  add comments that merely translate individual statements into prose, repeat
+  type information, preserve obsolete history, or compensate for unclear code.
+- Keep comments accurate when logic changes. Remove or update stale comments as
+  part of the same change.
 - Optimize database calls and expensive rendering based on measured or obvious
   cost. Use pagination, debouncing, caching, request deduplication, selective
   columns, and appropriate indexes where they materially help.
@@ -258,8 +270,9 @@ file containing real records is not repository-safe.
 
 ## 12. Releases, Versions, And Change History
 
-Every completed change intended to ship must be classified, versioned, and
-documented. Do this once per coherent release, not once per intermediate edit.
+Every completed change intended to ship must be classified and documented in
+`CHANGELOG.md`. Do not change an application, package, schema, or release
+version unless the user explicitly asks for a version update or release.
 
 Classify the change as one or more of:
 
@@ -272,30 +285,39 @@ Classify the change as one or more of:
 - `internal`: refactor, tooling, tests, or maintenance without intended behavior change
 - `documentation`: documentation-only change
 
-Use Semantic Versioning for shipping code:
+When the user explicitly requests a release or version update, use Semantic
+Versioning:
 
 - `PATCH` for backward-compatible fixes, security hardening, and internal improvements
 - `MINOR` for backward-compatible features or meaningful design additions
 - `MAJOR` for breaking API, schema, configuration, or user-workflow changes
 
-For each coherent shipping change:
+For every completed change:
 
-1. Update the version in the relevant component's canonical release source.
-2. Update `CHANGELOG.md` with a short entry under the version and date.
-3. State the classification and user-visible impact.
-4. Call out database migrations, configuration changes, security implications,
-   and manual deployment steps.
-5. Keep entries concise and factual; do not advertise unfinished behavior.
+1. Add a concise entry under the appropriate category in the `Unreleased`
+   section of `CHANGELOG.md`.
+2. State the classification and user-visible or operational impact.
+3. Call out database migrations, configuration changes, security implications,
+   and manual deployment steps where relevant.
+4. Keep entries concise and factual; do not advertise unfinished behavior.
+5. Preserve all `Unreleased` entries added since the last published version so
+   the eventual release notes describe everything included in that release.
 
-If no changelog exists for a shipping component, create one when making the
-first code release change. Agent-policy and documentation-only edits do not
-force an application version bump unless the user explicitly requests one,
-but they should be documented when they materially change engineering or
-operational behavior.
+When the user explicitly requests a version update or release:
 
-Never bump a version or edit release notes merely to conceal an incomplete or
-unverified change. A release is complete only after required verification has
-passed or remaining risk is clearly documented.
+1. Choose the appropriate semantic version from the complete set of
+   `Unreleased` changes, unless the user specifies the exact version.
+2. Update the version only in the relevant canonical release sources.
+3. Move all applicable `Unreleased` entries into a new versioned section with
+   the release date; do not omit earlier changes made since the previous
+   version.
+4. Leave an empty `Unreleased` section ready for subsequent work.
+5. Verify release notes, versions, migrations, and deployment instructions are
+   consistent before finishing.
+
+If no changelog exists, create one when making the first material change. Never
+bump a version without explicit user instruction, and never use a version bump
+or release-note edit to conceal an incomplete or unverified change.
 
 ## 13. Definition Of Done
 
@@ -307,6 +329,7 @@ Before finishing:
 - Review security, tenant isolation, failure states, and audit implications.
 - Run relevant tests, type checks, builds, migrations, and visual checks.
 - Review the final diff for unrelated or generated changes.
-- Update the version and changelog for completed shipping changes.
+- Update the changelog for completed changes. Update versions only when the
+  user explicitly requests a version update or release.
 - Summarize what changed, what was verified, and any remaining risk or manual
   action.

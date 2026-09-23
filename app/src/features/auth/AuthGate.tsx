@@ -32,7 +32,7 @@ export function AuthGate({ children }: AuthGateProps) {
     setIsSigningIn(false);
 
     if (signInError) {
-      setError(signInError.message);
+      setError("We could not sign you in with those credentials. Check them and try again.");
     }
   }
 
@@ -62,7 +62,7 @@ export function AuthGate({ children }: AuthGateProps) {
         <div>
           <span className="eyebrow">Secure access</span>
           <h1>Sign in to RILEN</h1>
-          <p>Student data is protected by Supabase Auth and row level security.</p>
+          <p>Use your authorized institution account to continue.</p>
         </div>
 
         {error && (

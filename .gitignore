@@ -1,0 +1,29 @@
+# Operating system and editor files
+.DS_Store
+**/.DS_Store
+
+# Dependencies and generated builds
+**/node_modules/
+**/dist/
+**/coverage/
+**/__pycache__/
+*.py[cod]
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Confidential source data and exports
+*.xlsx
+*.xls
+*.csv
+*.tsv
+**/imports/
+**/exports/
+**/private-data/
+**/data-dumps/
+
+# Generated or class-specific student data scripts
+app/db/student_import_*.sql
+app/scripts/generate_student_import_sql*.py

@@ -9,6 +9,7 @@ import type {
   FeeStudentSummary,
 } from "../../../types/fees";
 import { sampleCharges, sampleFeeStudents, sampleReceipts } from "../data/sampleFees";
+import { DataAccessError } from "../../../lib/errors";
 
 type FeeStudentRow = {
   student_fee_account_id: string;
@@ -67,9 +68,7 @@ async function fetchFeeStudents(): Promise<{ students: FeeStudentSummary[]; sour
     .select("*")
     .order("pending_fee", { ascending: false });
 
-  if (error || !data || data.length === 0) {
-    return { students: sampleFeeStudents, source: "sample" };
-  }
+  if (error) throw new DataAccessError("Unable to load fee accounts. Please retry.");
 
   return { students: (data as FeeStudentRow[]).map(mapFeeStudent), source: "supabase" };
 }
@@ -110,8 +109,9 @@ async function fetchFeeLedger(studentFeeAccountId: string): Promise<FeeLedger> {
       .order("receipt_date", { ascending: false }),
   ]);
 
-  if (chargesResult.error) throw new Error(chargesResult.error.message);
-  if (receiptsResult.error) throw new Error(receiptsResult.error.message);
+  if (chargesResult.error || receiptsResult.error) {
+    throw new DataAccessError("Unable to load this student's fee ledger.");
+  }
 
   return {
     charges: ((chargesResult.data ?? []) as FeeChargeRow[]).map(mapFeeCharge),
@@ -129,6 +129,20 @@ export async function collectFee(
   const discountAmount = Number(draft.discountAmount || 0);
   const collectedAt = new Date().toISOString();
 
+  if (!Number.isFinite(amount) || amount <= 0) {
+    throw new DataAccessError("Enter a valid collection amount greater than zero.");
+  }
+  if (!Number.isFinite(discountAmount) || discountAmount < 0) {
+    throw new DataAccessError("Enter a valid discount amount.");
+  }
+
+  const outstanding = charges
+    .filter((charge) => charge.status !== "PAID" && charge.status !== "VOID")
+    .reduce((total, charge) => total + Math.max(charge.adjustedAmount - charge.paidAmount, 0), 0);
+  if (amount > outstanding) {
+    throw new DataAccessError("The collection amount cannot exceed the outstanding balance.");
+  }
+
   if (source === "sample" || !supabase) {
     return {
       receiptNumber: `RILEN-${student.academicYear.replace("-", "")}-PREVIEW`,
@@ -144,7 +158,7 @@ export async function collectFee(
   const { data: receiptNumber, error: receiptError } = await client.rpc("next_fee_receipt_number" as never, {
     target_academic_year: student.academicYear,
   } as never);
-  if (receiptError) throw new Error(receiptError.message);
+  if (receiptError) throw new DataAccessError("Unable to reserve a receipt number.");
 
   const { data: receipt, error: insertError } = await client
     .from("fee_receipts" as never)
@@ -162,7 +176,7 @@ export async function collectFee(
     } as never)
     .select("id,receipt_number")
     .single();
-  if (insertError) throw new Error(insertError.message);
+  if (insertError) throw new DataAccessError("Unable to create the fee receipt.");
 
   let remaining = amount;
   const allocations = charges
@@ -177,7 +191,9 @@ export async function collectFee(
 
   if (allocations.length > 0) {
     const { error: allocationError } = await client.from("fee_receipt_allocations" as never).insert(allocations as never);
-    if (allocationError) throw new Error(allocationError.message);
+    if (allocationError) {
+      throw new DataAccessError("The receipt was created, but its allocations could not be completed. Contact support.");
+    }
   }
 
   invalidateCachedRequests("fee-directory:");

@@ -2,6 +2,7 @@ import { assertSupabaseClient } from "../../../lib/supabase/client";
 import { cachedRequest, invalidateCachedRequests } from "../../../lib/requestCache";
 import type { Student, StudentFilters } from "../../../types/student";
 import { mapStudentRow } from "./studentMapper";
+import { DataAccessError } from "../../../lib/errors";
 
 const STUDENT_SELECT = `
   id,
@@ -108,7 +109,7 @@ async function fetchStudents(searchQuery?: string): Promise<Student[]> {
   const { data, error } = await query;
 
   if (error) {
-    throw new Error(error.message);
+    throw new DataAccessError("Unable to load student records. Please retry.");
   }
 
   return (data ?? []).map((row) => mapStudentRow(row as never));
@@ -134,7 +135,7 @@ export async function updateStudent(student: Student): Promise<void> {
     })
     .eq("id", student.id);
 
-  if (studentError) throw new Error(studentError.message);
+  if (studentError) throw new DataAccessError("The student record could not be updated.");
 
   if (student.academicRegistration.id) {
     const { error } = await client
@@ -158,7 +159,7 @@ export async function updateStudent(student: Student): Promise<void> {
       })
       .eq("id", student.academicRegistration.id);
 
-    if (error) throw new Error(error.message);
+    if (error) throw new DataAccessError("The academic registration could not be updated.");
   }
 
   await Promise.all(student.guardians.map((guardian) => updateGuardian(student.id, guardian)));
@@ -184,7 +185,7 @@ async function updateGuardian(studentId: string, guardian: Student["guardians"][
       })
       .eq("id", guardian.id);
 
-    if (error) throw new Error(error.message);
+    if (error) throw new DataAccessError("The guardian record could not be updated.");
     return;
   }
 
@@ -197,7 +198,7 @@ async function updateGuardian(studentId: string, guardian: Student["guardians"][
     mobile_secondary: toNullable(guardian.mobileSecondary),
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new DataAccessError("The guardian record could not be created.");
 }
 
 async function updateAddress(student: Student) {
@@ -217,7 +218,7 @@ async function updateAddress(student: Student) {
 
   if (address.id) {
     const { error } = await client.from("student_addresses").update(payload).eq("id", address.id);
-    if (error) throw new Error(error.message);
+    if (error) throw new DataAccessError("The address could not be updated.");
     return;
   }
 
@@ -226,7 +227,7 @@ async function updateAddress(student: Student) {
     ...payload,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new DataAccessError("The address could not be created.");
 }
 
 async function updateBankAccount(student: Student) {
@@ -252,7 +253,7 @@ async function updateBankAccount(student: Student) {
 
   if (bankAccount.id) {
     const { error } = await client.from("student_bank_accounts").update(payload).eq("id", bankAccount.id);
-    if (error) throw new Error(error.message);
+    if (error) throw new DataAccessError("The bank account could not be updated.");
     return;
   }
 
@@ -261,7 +262,7 @@ async function updateBankAccount(student: Student) {
     ...payload,
   });
 
-  if (error) throw new Error(error.message);
+  if (error) throw new DataAccessError("The bank account could not be created.");
 }
 
 export async function getStudentDirectoryHealth(options?: { force?: boolean }) {
