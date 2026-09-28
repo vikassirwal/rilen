@@ -73,3 +73,34 @@ export type StudentFilters = {
   status: "all" | "active" | "inactive";
   rteStatus: "all" | "rte" | "non-rte";
 };
+
+export type StudentSummary = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+  className: string;
+  section: string;
+  city: string;
+  admissionNumber: string;
+  scholarNumber: string;
+  isRteStudent: boolean;
+  isActive: boolean;
+  missingCount: number;
+};
+
+export type StudentDirectoryFacets = {
+  classes: string[];
+  sections: string[];
+  cities: string[];
+};
+
+export type StudentDirectoryMetrics = {
+  total: number;
+  active: number;
+  inactive: number;
+  needsCompletion: number;
+  classCount: number;
+  cityCount: number;
+  rteCount: number;
+};

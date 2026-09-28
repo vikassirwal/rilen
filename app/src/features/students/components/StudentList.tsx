@@ -1,12 +1,11 @@
 import { ChevronRight } from "lucide-react";
-import type { Student } from "../../../types/student";
+import type { StudentSummary } from "../../../types/student";
 import { fullName, initials } from "../../../utils/format";
-import { getPendingStudentTags, getStudentDirectoryTags } from "../utils/studentInsights";
 
 type StudentListProps = {
-  students: Student[];
+  students: StudentSummary[];
   selectedStudentId: string | null;
-  onSelect: (student: Student) => void;
+  onSelect: (studentId: string) => void;
 };
 
 export function StudentList({ students, selectedStudentId, onSelect }: StudentListProps) {
@@ -22,39 +21,31 @@ export function StudentList({ students, selectedStudentId, onSelect }: StudentLi
   return (
     <div className="student-list">
       {students.map((student) => {
-        const registration = student.academicRegistration;
-        const guardian = student.guardians[0];
-        const pendingTags = getPendingStudentTags(student);
-        const directoryTags = getStudentDirectoryTags(student);
-
         return (
           <button
             key={student.id}
             className={`student-row ${selectedStudentId === student.id ? "is-selected" : ""}`}
-            onClick={() => onSelect(student)}
-            title={pendingTags.length > 0 ? `Missing: ${pendingTags.join(", ")}` : undefined}
+            onClick={() => onSelect(student.id)}
           >
             <span className="avatar">{initials(student.firstName, student.lastName)}</span>
             <span className="student-row__main">
               <strong>{fullName(student.firstName, student.lastName)}</strong>
               <span>
-                Class {registration.className || "Not added"}
-                {registration.section ? `-${registration.section}` : ""} · {student.address.city || "City pending"}
+                Class {student.className || "Not added"}
+                {student.section ? `-${student.section}` : ""} · {student.city || "City pending"}
               </span>
             </span>
             <span className="student-row__meta">
-              <span>{registration.scholarNumber || registration.admissionNumber || "No ID"}</span>
-              <span>{guardian?.mobilePrimary || "No mobile"}</span>
+              <span>{student.scholarNumber || student.admissionNumber || "No ID"}</span>
             </span>
             <span className="student-row__badges">
-              {directoryTags.map((tag) => (
-                <span
-                  className={`tag-pill ${tag === "RTE" ? "tag-pill--rte" : "tag-pill--pending"}`}
-                  key={tag}
-                >
-                  {tag}
+              {student.isRteStudent && <span className="tag-pill tag-pill--rte">RTE</span>}
+              {!student.isActive && <span className="tag-pill tag-pill--pending">Inactive</span>}
+              {student.missingCount > 0 && (
+                <span className="tag-pill tag-pill--pending" title={`${student.missingCount} required fields need attention`}>
+                  Incomplete
                 </span>
-              ))}
+              )}
             </span>
             <ChevronRight size={18} />
           </button>

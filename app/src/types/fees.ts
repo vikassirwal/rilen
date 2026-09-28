@@ -37,6 +37,10 @@ export type FeeDashboardStats = {
   studentsWithPendingFee: number;
 };
 
+export type FeeDirectoryFacets = {
+  classes: string[];
+};
+
 export type FeeCharge = {
   id: string;
   feeHeadName: string;

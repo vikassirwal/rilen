@@ -6,6 +6,8 @@ All notable changes to RILEN are documented in this file.
 
 ### Database
 
+- Added RLS-aware student and fee directory read models, aggregate functions,
+  and lookup indexes for paginated, server-filtered application queries.
 - Added school tenants and authenticated user memberships, scoped student
   access policies by school, and attached every student to a school.
 - Added per-school legacy fee-receipt references for one-time historical
@@ -22,6 +24,9 @@ All notable changes to RILEN are documented in this file.
 
 ### Added
 
+- Added a responsive, collapsible application navigation with Students and
+  Fees as primary destinations, icon-only desktop mode, mobile drawer behavior,
+  and account sign-out in the navigation footer.
 - Rebuilt the public RILEN website from the approved interactive prototype,
   including institution, teacher, parent, and student product experiences,
   responsive layouts, charts, theme support, and motion preferences.
@@ -33,6 +38,16 @@ All notable changes to RILEN are documented in this file.
 
 ### Changed
 
+- Refreshed the application visual system with restrained semantic color,
+  clearer surface hierarchy, accessible focus states, tactile list interactions,
+  and reduced-motion-aware page and modal transitions.
+- Replaced full-directory downloads with server-side filtering, sorting,
+  counting, and pagination for student and fee screens.
+- Changed student details to load only when a record is opened, reducing
+  routine transfer of guardian, address, identity, and bank information.
+- Added cached directory facets and aggregate dashboard metrics, deterministic
+  current-registration selection, page-size controls, and explicit loading and
+  empty states.
 - Separated the public website into dedicated HTML, stylesheet, and behavior
   files while retaining the approved content, design, and interactions.
 - Made repository guidance technology-neutral so it remains valid if the

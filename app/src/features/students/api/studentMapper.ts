@@ -9,9 +9,16 @@ type StudentRow = Database["public"]["Tables"]["students"]["Row"] & {
 };
 
 export function mapStudentRow(row: StudentRow): Student {
-  const registration = row.student_academic_registrations[0];
-  const address = row.student_addresses[0];
-  const bankAccount = row.student_bank_accounts[0];
+  // Embedded relation order is not guaranteed, so choose records explicitly.
+  const registration = [...row.student_academic_registrations].sort((left, right) => {
+    if (left.is_active !== right.is_active) return Number(right.is_active) - Number(left.is_active);
+    return right.academic_year.localeCompare(left.academic_year) || right.created_at.localeCompare(left.created_at);
+  })[0];
+  const address = [...row.student_addresses].sort((left, right) => {
+    if ((left.address_type === "home") !== (right.address_type === "home")) return left.address_type === "home" ? -1 : 1;
+    return left.created_at.localeCompare(right.created_at);
+  })[0];
+  const bankAccount = [...row.student_bank_accounts].sort((left, right) => left.created_at.localeCompare(right.created_at))[0];
 
   return {
     id: row.id,

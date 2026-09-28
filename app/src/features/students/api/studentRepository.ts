@@ -1,6 +1,13 @@
 import { assertSupabaseClient } from "../../../lib/supabase/client";
 import { cachedRequest, invalidateCachedRequests } from "../../../lib/requestCache";
-import type { Student, StudentFilters } from "../../../types/student";
+import type { PaginatedResult, PageRequest } from "../../../types/pagination";
+import type {
+  Student,
+  StudentDirectoryFacets,
+  StudentDirectoryMetrics,
+  StudentFilters,
+  StudentSummary,
+} from "../../../types/student";
 import { mapStudentRow } from "./studentMapper";
 import { DataAccessError } from "../../../lib/errors";
 
@@ -69,50 +76,130 @@ const STUDENT_SELECT = `
 `;
 
 const STUDENT_DIRECTORY_CACHE_PREFIX = "student-directory:";
+const STUDENT_DETAIL_CACHE_PREFIX = "student-detail:";
 const STUDENT_DIRECTORY_TTL_MS = 2 * 60 * 1000;
 const STUDENT_HEALTH_CACHE_KEY = "student-directory-health";
 
-export async function listStudents(filters?: StudentFilters, options?: { force?: boolean }): Promise<Student[]> {
-  const cacheKey = `${STUDENT_DIRECTORY_CACHE_PREFIX}${JSON.stringify({
-    query: filters?.query.trim().toLowerCase() ?? "",
-  })}`;
+type StudentSummaryRow = {
+  id: string;
+  first_name: string;
+  last_name: string | null;
+  date_of_birth: string | null;
+  class_name: string | null;
+  section: string | null;
+  city: string | null;
+  admission_number: string | null;
+  scholar_number: string | null;
+  is_rte_student: boolean | null;
+  is_active: boolean | null;
+  missing_count: number | string | null;
+};
 
-  const students = await cachedRequest(cacheKey, () => fetchStudents(filters?.query), {
+export async function listStudentSummaries(
+  filters: StudentFilters,
+  pageRequest: PageRequest,
+  options?: { force?: boolean },
+): Promise<PaginatedResult<StudentSummary>> {
+  const cacheKey = `${STUDENT_DIRECTORY_CACHE_PREFIX}page:${JSON.stringify({ filters, pageRequest })}`;
+  return cachedRequest(cacheKey, () => fetchStudentSummaries(filters, pageRequest), {
     ttlMs: STUDENT_DIRECTORY_TTL_MS,
     force: options?.force,
   });
-
-  return students.filter((student) => matchesRelatedFilters(student, filters));
 }
 
-async function fetchStudents(searchQuery?: string): Promise<Student[]> {
-  const client = assertSupabaseClient();
+async function fetchStudentSummaries(
+  filters: StudentFilters,
+  { page, pageSize }: PageRequest,
+): Promise<PaginatedResult<StudentSummary>> {
+  const client = assertSupabaseClient() as any;
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
   let query = client
-    .from("students")
-    .select(STUDENT_SELECT)
-    .order("first_name", { ascending: true })
-    .limit(500);
+    .from("student_directory" as never)
+    .select(
+      "id,first_name,last_name,date_of_birth,class_name,section,city,admission_number,scholar_number,is_rte_student,is_active,missing_count",
+      { count: "exact" },
+    );
 
-  if (searchQuery) {
-    const term = searchQuery.trim();
+  const searchTerm = sanitizeSearchTerm(filters.query);
+  if (searchTerm) {
     query = query.or(
-      [
-        `first_name.ilike.%${escapeLike(term)}%`,
-        `last_name.ilike.%${escapeLike(term)}%`,
-        `aadhaar_number.ilike.%${escapeLike(term)}%`,
-        `sssm_id.ilike.%${escapeLike(term)}%`,
-        `family_id.ilike.%${escapeLike(term)}%`,
-      ].join(","),
+      ["first_name", "last_name", "admission_number", "scholar_number", "city", "class_name"]
+        .map((field) => `${field}.ilike.%${searchTerm}%`)
+        .join(","),
     );
   }
+  if (filters.className) query = query.eq("class_name", filters.className);
+  if (filters.section) query = query.eq("section", filters.section);
+  if (filters.city) query = query.eq("city", filters.city);
+  if (filters.status !== "all") query = query.eq("is_active", filters.status === "active");
+  if (filters.rteStatus !== "all") query = query.eq("is_rte_student", filters.rteStatus === "rte");
 
-  const { data, error } = await query;
+  const { data, count, error } = await query
+    .order("first_name", { ascending: true })
+    .order("last_name", { ascending: true })
+    .order("id", { ascending: true })
+    .range(from, to);
 
   if (error) {
     throw new DataAccessError("Unable to load student records. Please retry.");
   }
 
-  return (data ?? []).map((row) => mapStudentRow(row as never));
+  return {
+    items: ((data ?? []) as StudentSummaryRow[]).map(mapStudentSummary),
+    totalCount: count ?? 0,
+  };
+}
+
+export async function getStudent(studentId: string, options?: { force?: boolean }): Promise<Student> {
+  return cachedRequest(`${STUDENT_DETAIL_CACHE_PREFIX}${studentId}`, () => fetchStudent(studentId), {
+    ttlMs: STUDENT_DIRECTORY_TTL_MS,
+    force: options?.force,
+  });
+}
+
+async function fetchStudent(studentId: string): Promise<Student> {
+  const client = assertSupabaseClient();
+  const { data, error } = await client.from("students").select(STUDENT_SELECT).eq("id", studentId).single();
+  if (error || !data) throw new DataAccessError("Unable to load this student record.");
+  return mapStudentRow(data as never);
+}
+
+export async function getStudentDirectoryFacets(options?: { force?: boolean }): Promise<StudentDirectoryFacets> {
+  return cachedRequest(`${STUDENT_DIRECTORY_CACHE_PREFIX}facets`, fetchStudentDirectoryFacets, {
+    ttlMs: 10 * 60 * 1000,
+    force: options?.force,
+  });
+}
+
+async function fetchStudentDirectoryFacets(): Promise<StudentDirectoryFacets> {
+  const client = assertSupabaseClient() as any;
+  const { data, error } = await client.rpc("get_student_directory_facets" as never);
+  if (error) throw new DataAccessError("Unable to load student filters.");
+  return normalizeStudentFacets(data);
+}
+
+export async function getStudentDirectoryMetrics(options?: { force?: boolean }): Promise<StudentDirectoryMetrics> {
+  return cachedRequest(`${STUDENT_DIRECTORY_CACHE_PREFIX}metrics`, fetchStudentDirectoryMetrics, {
+    ttlMs: 5 * 60 * 1000,
+    force: options?.force,
+  });
+}
+
+async function fetchStudentDirectoryMetrics(): Promise<StudentDirectoryMetrics> {
+  const client = assertSupabaseClient() as any;
+  const { data, error } = await client.rpc("get_student_directory_metrics" as never);
+  if (error) throw new DataAccessError("Unable to load student totals.");
+  const value = (data ?? {}) as Record<string, unknown>;
+  return {
+    total: Number(value.total ?? 0),
+    active: Number(value.active ?? 0),
+    inactive: Number(value.inactive ?? 0),
+    needsCompletion: Number(value.needsCompletion ?? value.needs_completion ?? 0),
+    classCount: Number(value.classCount ?? value.class_count ?? 0),
+    cityCount: Number(value.cityCount ?? value.city_count ?? 0),
+    rteCount: Number(value.rteCount ?? value.rte_count ?? 0),
+  };
 }
 
 export async function updateStudent(student: Student): Promise<void> {
@@ -294,27 +381,37 @@ async function fetchStudentDirectoryHealth() {
 
 export function invalidateStudentDirectoryCache() {
   invalidateCachedRequests(STUDENT_DIRECTORY_CACHE_PREFIX);
+  invalidateCachedRequests(STUDENT_DETAIL_CACHE_PREFIX);
+  invalidateCachedRequests(STUDENT_HEALTH_CACHE_KEY);
 }
 
-function matchesRelatedFilters(student: Student, filters?: StudentFilters) {
-  if (!filters) return true;
-
-  const registration = student.academicRegistration;
-  const matchesClass = !filters.className || registration.className === filters.className;
-  const matchesSection = !filters.section || registration.section === filters.section;
-  const matchesCity = !filters.city || student.address.city === filters.city;
-  const matchesStatus =
-    filters.status === "all" ||
-    (filters.status === "active" && registration.isActive) ||
-    (filters.status === "inactive" && !registration.isActive);
-  const matchesRte =
-    filters.rteStatus === "all" ||
-    (filters.rteStatus === "rte" && registration.isRteStudent) ||
-    (filters.rteStatus === "non-rte" && !registration.isRteStudent);
-
-  return matchesClass && matchesSection && matchesCity && matchesStatus && matchesRte;
+export function invalidateStudentDetailCache(studentId: string) {
+  invalidateCachedRequests(`${STUDENT_DETAIL_CACHE_PREFIX}${studentId}`);
 }
 
-function escapeLike(value: string) {
-  return value.replaceAll("%", "\\%").replaceAll("_", "\\_");
+function mapStudentSummary(row: StudentSummaryRow): StudentSummary {
+  return {
+    id: row.id,
+    firstName: row.first_name,
+    lastName: row.last_name ?? "",
+    dateOfBirth: row.date_of_birth ?? "",
+    className: row.class_name ?? "",
+    section: row.section ?? "",
+    city: row.city ?? "",
+    admissionNumber: row.admission_number ?? "",
+    scholarNumber: row.scholar_number ?? "",
+    isRteStudent: Boolean(row.is_rte_student),
+    isActive: Boolean(row.is_active),
+    missingCount: Number(row.missing_count ?? 0),
+  };
+}
+
+function normalizeStudentFacets(value: unknown): StudentDirectoryFacets {
+  const data = (value ?? {}) as Record<string, unknown>;
+  const strings = (item: unknown) => (Array.isArray(item) ? item.filter((entry): entry is string => typeof entry === "string") : []);
+  return { classes: strings(data.classes), sections: strings(data.sections), cities: strings(data.cities) };
+}
+
+function sanitizeSearchTerm(value: string) {
+  return value.trim().replace(/[\\%_,()]/g, " ").replace(/\s+/g, " ");
 }

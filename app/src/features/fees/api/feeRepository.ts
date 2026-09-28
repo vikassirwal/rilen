@@ -6,9 +6,14 @@ import type {
   FeeCollectionResult,
   FeeLedger,
   FeeReceipt,
+  FeeDashboardStats,
+  FeeDirectoryFacets,
+  FeeFilters,
   FeeStudentSummary,
 } from "../../../types/fees";
+import type { PageRequest, PaginatedResult } from "../../../types/pagination";
 import { sampleCharges, sampleFeeStudents, sampleReceipts } from "../data/sampleFees";
+import { calculateStats, filterFeeStudents } from "../utils/feeMath";
 import { DataAccessError } from "../../../lib/errors";
 
 type FeeStudentRow = {
@@ -52,26 +57,68 @@ type FeeReceiptRow = {
   status: FeeReceipt["status"];
 };
 
-export async function listFeeStudents(): Promise<{ students: FeeStudentSummary[]; source: "supabase" | "sample" }> {
-  return cachedRequest("fee-directory:all", fetchFeeStudents, { ttlMs: 60 * 1000 });
+export async function listFeeStudents(filters: FeeFilters, pageRequest: PageRequest, options?: { force?: boolean }): Promise<{ page: PaginatedResult<FeeStudentSummary>; stats: FeeDashboardStats; facets: FeeDirectoryFacets; source: "supabase" | "sample" }> {
+  const key = `fee-directory:${JSON.stringify({ filters, pageRequest })}`;
+  return cachedRequest(key, () => fetchFeeStudents(filters, pageRequest), { ttlMs: 60 * 1000, force: options?.force });
 }
 
-export async function refreshFeeStudents(): Promise<{ students: FeeStudentSummary[]; source: "supabase" | "sample" }> {
-  return cachedRequest("fee-directory:all", fetchFeeStudents, { ttlMs: 60 * 1000, force: true });
-}
-
-async function fetchFeeStudents(): Promise<{ students: FeeStudentSummary[]; source: "supabase" | "sample" }> {
-  if (!supabase) return { students: sampleFeeStudents, source: "sample" };
+async function fetchFeeStudents(filters: FeeFilters, { page, pageSize }: PageRequest) {
+  if (!supabase) {
+    const filtered = filterFeeStudents(sampleFeeStudents, filters);
+    const start = (page - 1) * pageSize;
+    return {
+      page: { items: filtered.slice(start, start + pageSize), totalCount: filtered.length },
+      stats: calculateStats(filtered),
+      facets: { classes: Array.from(new Set(sampleFeeStudents.map((student) => student.className))).sort() },
+      source: "sample" as const,
+    };
+  }
 
   const client = assertSupabaseClient() as any;
-  const { data, error } = await client
-    .from("fee_student_directory" as never)
-    .select("*")
-    .order("pending_fee", { ascending: false });
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
+  let query = client
+    .from("fee_student_directory_page" as never)
+    .select("student_fee_account_id,student_id,first_name,last_name,scholar_number,admission_number,academic_year,class_name,section,total_fee,received_fee,pending_fee,last_receipt_number,legacy_receipt_numbers,last_payment_date,next_due_date,is_active", { count: "exact" });
 
-  if (error) throw new DataAccessError("Unable to load fee accounts. Please retry.");
+  const searchTerm = sanitizeSearchTerm(filters.query);
+  if (searchTerm) query = query.ilike("search_text", `%${searchTerm}%`);
+  if (filters.className) query = query.eq("class_name", filters.className);
+  if (filters.status === "pending") query = query.gt("pending_fee", 0);
+  if (filters.status === "paid") query = query.lte("pending_fee", 0);
+  if (filters.fromDate) query = query.gte("last_payment_date", filters.fromDate);
+  if (filters.toDate) query = query.lte("last_payment_date", filters.toDate);
 
-  return { students: (data as FeeStudentRow[]).map(mapFeeStudent), source: "supabase" };
+  if (filters.sort === "pending-asc") query = query.order("pending_fee", { ascending: true });
+  else if (filters.sort === "name-asc") query = query.order("first_name", { ascending: true }).order("last_name", { ascending: true });
+  else if (filters.sort === "recent-desc") query = query.order("last_payment_date", { ascending: false, nullsFirst: false });
+  else query = query.order("pending_fee", { ascending: false });
+
+  const [pageResult, statsResult, facets] = await Promise.all([
+    query.order("student_fee_account_id", { ascending: true }).range(from, to),
+    client.rpc("get_fee_dashboard_stats" as never, feeRpcFilters(filters) as never),
+    getFeeDirectoryFacets(),
+  ]);
+
+  if (pageResult.error || statsResult.error) {
+    throw new DataAccessError("Unable to load fee accounts. Please retry.");
+  }
+
+  return {
+    page: { items: ((pageResult.data ?? []) as FeeStudentRow[]).map(mapFeeStudent), totalCount: pageResult.count ?? 0 },
+    stats: mapFeeStats(statsResult.data),
+    facets,
+    source: "supabase" as const,
+  };
+}
+
+async function getFeeDirectoryFacets(): Promise<FeeDirectoryFacets> {
+  return cachedRequest("fee-directory:facets", async () => {
+    const client = assertSupabaseClient() as any;
+    const { data, error } = await client.rpc("get_fee_directory_facets" as never);
+    if (error) throw new DataAccessError("Unable to load fee filters.");
+    return mapFeeFacets(data);
+  }, { ttlMs: 10 * 60 * 1000 });
 }
 
 export async function getFeeLedger(studentFeeAccountId: string, source: "supabase" | "sample"): Promise<FeeLedger> {
@@ -255,4 +302,34 @@ function mapFeeReceipt(row: FeeReceiptRow): FeeReceipt {
     discountAmount: Number(row.discount_amount ?? 0),
     status: row.status,
   };
+}
+
+function feeRpcFilters(filters: FeeFilters) {
+  return {
+    target_query: sanitizeSearchTerm(filters.query) || null,
+    target_class: filters.className || null,
+    target_status: filters.status === "all" ? null : filters.status,
+    target_from: filters.fromDate || null,
+    target_to: filters.toDate || null,
+  };
+}
+
+function mapFeeStats(value: unknown): FeeDashboardStats {
+  const data = (value ?? {}) as Record<string, unknown>;
+  return {
+    studentCount: Number(data.studentCount ?? data.student_count ?? 0),
+    totalFee: Number(data.totalFee ?? data.total_fee ?? 0),
+    receivedFee: Number(data.receivedFee ?? data.received_fee ?? 0),
+    pendingFee: Number(data.pendingFee ?? data.pending_fee ?? 0),
+    studentsWithPendingFee: Number(data.studentsWithPendingFee ?? data.students_with_pending_fee ?? 0),
+  };
+}
+
+function mapFeeFacets(value: unknown): FeeDirectoryFacets {
+  const data = (value ?? {}) as Record<string, unknown>;
+  return { classes: Array.isArray(data.classes) ? data.classes.filter((item): item is string => typeof item === "string") : [] };
+}
+
+function sanitizeSearchTerm(value: string) {
+  return value.trim().replace(/[\\%_,()]/g, " ").replace(/\s+/g, " ").toLowerCase();
 }

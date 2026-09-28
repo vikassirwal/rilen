@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, ReceiptText, RefreshCw } from "lucide-react";
+import { ReceiptText, RefreshCw } from "lucide-react";
 import { Button } from "../../components/ui/Button";
+import { Pagination } from "../../components/ui/Pagination";
 import type { CollectFeeDraft, FeeCollectionResult, FeeFilters, FeeStudentSummary } from "../../types/fees";
 import { collectFee } from "./api/feeRepository";
 import { CollectFeeModal } from "./components/CollectFeeModal";
@@ -12,10 +13,6 @@ import { PrintableReceipt } from "./components/PrintableReceipt";
 import { useFeeDashboard, useFeeLedger } from "./hooks/useFeeDashboard";
 import { getUserSafeError } from "../../lib/errors";
 
-type FeeWorkspaceProps = {
-  onBack: () => void;
-};
-
 const defaultFilters: FeeFilters = {
   query: "",
   className: "",
@@ -25,14 +22,16 @@ const defaultFilters: FeeFilters = {
   sort: "pending-desc",
 };
 
-export function FeeWorkspace({ onBack }: FeeWorkspaceProps) {
+export function FeeWorkspace() {
   const [filters, setFilters] = useState(defaultFilters);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
   const [selectedStudent, setSelectedStudent] = useState<FeeStudentSummary | null>(null);
   const [isCollecting, setIsCollecting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [printReceipt, setPrintReceipt] = useState<FeeCollectionResult | null>(null);
   const [collectionError, setCollectionError] = useState("");
-  const { students, classOptions, stats, source, isLoading, error, refresh } = useFeeDashboard(filters);
+  const { students, totalCount, classOptions, stats, source, isLoading, error, refresh } = useFeeDashboard(filters, { page, pageSize });
   const ledger = useFeeLedger(selectedStudent, source);
 
   useEffect(() => {
@@ -64,15 +63,11 @@ export function FeeWorkspace({ onBack }: FeeWorkspaceProps) {
   return (
     <main className="app-shell">
       <header className="topbar">
-        <div className="brand-mark">R</div>
         <div>
           <p>RILEN</p>
           <h1>Fee intelligence</h1>
         </div>
         <div className="mode-toggle" aria-label="Fee workspace actions">
-          <Button variant="secondary" icon={<ArrowLeft size={17} />} onClick={onBack}>
-            Students
-          </Button>
           <Button variant="secondary" icon={<RefreshCw size={17} />} onClick={refresh}>
             Refresh
           </Button>
@@ -85,7 +80,7 @@ export function FeeWorkspace({ onBack }: FeeWorkspaceProps) {
         <div className="fee-workspace__header">
           <div>
             <span className="eyebrow">{source === "sample" ? "Preview data" : "Live Supabase"}</span>
-            <h2>{isLoading ? "Loading fee accounts" : `${students.length} fee accounts`}</h2>
+            <h2>{isLoading ? "Loading fee accounts" : `${totalCount} fee accounts`}</h2>
           </div>
           <ReceiptText size={22} />
         </div>
@@ -103,8 +98,25 @@ export function FeeWorkspace({ onBack }: FeeWorkspaceProps) {
           </div>
         )}
 
-        <FeeFiltersView filters={filters} classOptions={classOptions} onChange={setFilters} />
+        <FeeFiltersView
+          filters={filters}
+          classOptions={classOptions}
+          onChange={(nextFilters) => {
+            setFilters(nextFilters);
+            setPage(1);
+          }}
+        />
         <FeeStudentList students={students} onSelect={setSelectedStudent} />
+        <Pagination
+          page={page}
+          pageSize={pageSize}
+          totalCount={totalCount}
+          onPageChange={setPage}
+          onPageSizeChange={(value) => {
+            setPageSize(value);
+            setPage(1);
+          }}
+        />
       </section>
 
       {selectedStudent && (
