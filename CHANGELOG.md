@@ -6,6 +6,10 @@ All notable changes to RILEN are documented in this file.
 
 ### Database
 
+- Added server-only application identity, role, school-membership, and session
+  tables for RILEN-managed authentication, plus application-user references on
+  financial audit records while retaining existing Supabase Auth references
+  during the backend migration.
 - Added RLS-aware student and fee directory read models, aggregate functions,
   and lookup indexes for paginated, server-filtered application queries.
 - Added school tenants and authenticated user memberships, scoped student
